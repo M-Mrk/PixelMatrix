@@ -1,0 +1,16 @@
+[data-theme="dark"] {
+  --bg: #121212;
+  --surface: #1e1e1e;
+  --surface-hover: #292929;
+
+  --text: #eeeeee;
+  --text-muted: #999999;
+
+  --border: #444444;
+
+  --accent: #66aaff;
+  --accent-hover: #88bbff;
+
+  --danger: #ff6666;
+  --success: #66cc66;
+}

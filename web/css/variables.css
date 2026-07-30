@@ -1,0 +1,23 @@
+:root {
+  /* Spacings */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+
+  /* Borders */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Text */
+  --font: system-ui, sans-serif;
+
+  --font-size-sm: 0.8rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+
+  /* Animation */
+  --transistion-fast: 100ms ease;
+  --transition-normal: 200ms ease;
+}
