@@ -1,6 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export class ErrorOutput {
+    private constructor();
+    free(): void;
+    [Symbol.dispose](): void;
+    static new(pixels: Pixel[], error: string): ErrorOutput;
+    readonly error: string;
+    readonly pixels: Pixel[];
+}
+
 export class Pixel {
     private constructor();
     free(): void;
@@ -20,6 +29,7 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
     readonly memory: WebAssembly.Memory;
+    readonly __wbg_erroroutput_free: (a: number, b: number) => void;
     readonly __wbg_get_pixel_b: (a: number) => number;
     readonly __wbg_get_pixel_g: (a: number) => number;
     readonly __wbg_get_pixel_r: (a: number) => number;
@@ -27,12 +37,17 @@ export interface InitOutput {
     readonly __wbg_set_pixel_b: (a: number, b: number) => void;
     readonly __wbg_set_pixel_g: (a: number, b: number) => void;
     readonly __wbg_set_pixel_r: (a: number, b: number) => void;
-    readonly run_script: (a: number, b: number, c: number, d: bigint, e: bigint) => [number, number];
+    readonly erroroutput_error: (a: number) => [number, number];
+    readonly erroroutput_new: (a: number, b: number, c: number, d: number) => number;
+    readonly erroroutput_pixels: (a: number) => [number, number];
+    readonly run_script: (a: number, b: number, c: number, d: bigint, e: bigint) => [number, number, number, number];
+    readonly __externref_table_alloc: () => number;
     readonly __wbindgen_externrefs: WebAssembly.Table;
+    readonly __wbindgen_free: (a: number, b: number, c: number) => void;
     readonly __wbindgen_malloc: (a: number, b: number) => number;
     readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
     readonly __externref_drop_slice: (a: number, b: number) => void;
-    readonly __wbindgen_free: (a: number, b: number, c: number) => void;
+    readonly __externref_table_dealloc: (a: number) => void;
     readonly __wbindgen_start: () => void;
 }
 

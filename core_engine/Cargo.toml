@@ -7,4 +7,5 @@ edition = "2024"
 crate-type = ["cdylib"]
 
 [dependencies]
+rhai = { version = "1.25.1", default-features = false, features = ["std"] }
 wasm-bindgen = "0.2.126"

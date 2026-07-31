@@ -1,11 +1,74 @@
 /* @ts-self-types="./core_engine.d.ts" */
 
+export class ErrorOutput {
+    static __wrap(ptr) {
+        const obj = Object.create(ErrorOutput.prototype);
+        obj.__wbg_ptr = ptr;
+        ErrorOutputFinalization.register(obj, obj.__wbg_ptr, obj);
+        return obj;
+    }
+    __destroy_into_raw() {
+        const ptr = this.__wbg_ptr;
+        this.__wbg_ptr = 0;
+        ErrorOutputFinalization.unregister(this);
+        return ptr;
+    }
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_erroroutput_free(ptr, 0);
+    }
+    /**
+     * @returns {string}
+     */
+    get error() {
+        let deferred1_0;
+        let deferred1_1;
+        try {
+            const ret = wasm.erroroutput_error(this.__wbg_ptr);
+            deferred1_0 = ret[0];
+            deferred1_1 = ret[1];
+            return getStringFromWasm0(ret[0], ret[1]);
+        } finally {
+            wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
+        }
+    }
+    /**
+     * @param {Pixel[]} pixels
+     * @param {string} error
+     * @returns {ErrorOutput}
+     */
+    static new(pixels, error) {
+        const ptr0 = passArrayJsValueToWasm0(pixels, wasm.__wbindgen_malloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ptr1 = passStringToWasm0(error, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len1 = WASM_VECTOR_LEN;
+        const ret = wasm.erroroutput_new(ptr0, len0, ptr1, len1);
+        return ErrorOutput.__wrap(ret);
+    }
+    /**
+     * @returns {Pixel[]}
+     */
+    get pixels() {
+        const ret = wasm.erroroutput_pixels(this.__wbg_ptr);
+        var v1 = getArrayJsValueFromWasm0(ret[0], ret[1]).slice();
+        wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+        return v1;
+    }
+}
+if (Symbol.dispose) ErrorOutput.prototype[Symbol.dispose] = ErrorOutput.prototype.free;
+
 export class Pixel {
     static __wrap(ptr) {
         const obj = Object.create(Pixel.prototype);
         obj.__wbg_ptr = ptr;
         PixelFinalization.register(obj, obj.__wbg_ptr, obj);
         return obj;
+    }
+    static __unwrap(jsValue) {
+        if (!(jsValue instanceof Pixel)) {
+            return 0;
+        }
+        return jsValue.__destroy_into_raw();
     }
     __destroy_into_raw() {
         const ptr = this.__wbg_ptr;
@@ -77,6 +140,9 @@ export function run_script(script, script_type, resolution_width, resolution_hei
     const ptr0 = passStringToWasm0(script, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len0 = WASM_VECTOR_LEN;
     const ret = wasm.run_script(ptr0, len0, script_type, resolution_width, resolution_height);
+    if (ret[3]) {
+        throw takeFromExternrefTable0(ret[2]);
+    }
     var v2 = getArrayJsValueFromWasm0(ret[0], ret[1]).slice();
     wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
     return v2;
@@ -84,12 +150,48 @@ export function run_script(script, script_type, resolution_width, resolution_hei
 function __wbg_get_imports() {
     const import0 = {
         __proto__: null,
+        __wbg___wbindgen_is_undefined_c05833b95a3cf397: function(arg0) {
+            const ret = arg0 === undefined;
+            return ret;
+        },
         __wbg___wbindgen_throw_344f42d3211c4765: function(arg0, arg1) {
             throw new Error(getStringFromWasm0(arg0, arg1));
+        },
+        __wbg_erroroutput_new: function(arg0) {
+            const ret = ErrorOutput.__wrap(arg0);
+            return ret;
+        },
+        __wbg_now_e7c6795a7f81e10f: function(arg0) {
+            const ret = arg0.now();
+            return ret;
+        },
+        __wbg_performance_3fcf6e32a7e1ed0a: function(arg0) {
+            const ret = arg0.performance;
+            return ret;
         },
         __wbg_pixel_new: function(arg0) {
             const ret = Pixel.__wrap(arg0);
             return ret;
+        },
+        __wbg_pixel_unwrap: function(arg0) {
+            const ret = Pixel.__unwrap(arg0);
+            return ret;
+        },
+        __wbg_static_accessor_GLOBAL_4ef717fb391d88b7: function() {
+            const ret = typeof global === 'undefined' ? null : global;
+            return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
+        },
+        __wbg_static_accessor_GLOBAL_THIS_8d1badc68b5a74f4: function() {
+            const ret = typeof globalThis === 'undefined' ? null : globalThis;
+            return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
+        },
+        __wbg_static_accessor_SELF_146583524fe1469b: function() {
+            const ret = typeof self === 'undefined' ? null : self;
+            return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
+        },
+        __wbg_static_accessor_WINDOW_f2829a2234d7819e: function() {
+            const ret = typeof window === 'undefined' ? null : window;
+            return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
         },
         __wbindgen_init_externref_table: function() {
             const table = wasm.__wbindgen_externrefs;
@@ -107,9 +209,18 @@ function __wbg_get_imports() {
     };
 }
 
+const ErrorOutputFinalization = (typeof FinalizationRegistry === 'undefined')
+    ? { register: () => {}, unregister: () => {} }
+    : new FinalizationRegistry(ptr => wasm.__wbg_erroroutput_free(ptr, 1));
 const PixelFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_pixel_free(ptr, 1));
+
+function addToExternrefTable0(obj) {
+    const idx = wasm.__externref_table_alloc();
+    wasm.__wbindgen_externrefs.set(idx, obj);
+    return idx;
+}
 
 function getArrayJsValueFromWasm0(ptr, len) {
     ptr = ptr >>> 0;
@@ -140,6 +251,20 @@ function getUint8ArrayMemory0() {
         cachedUint8ArrayMemory0 = new Uint8Array(wasm.memory.buffer);
     }
     return cachedUint8ArrayMemory0;
+}
+
+function isLikeNone(x) {
+    return x === undefined || x === null;
+}
+
+function passArrayJsValueToWasm0(array, malloc) {
+    const ptr = malloc(array.length * 4, 4) >>> 0;
+    for (let i = 0; i < array.length; i++) {
+        const add = addToExternrefTable0(array[i]);
+        getDataViewMemory0().setUint32(ptr + 4 * i, add, true);
+    }
+    WASM_VECTOR_LEN = array.length;
+    return ptr;
 }
 
 function passStringToWasm0(arg, malloc, realloc) {
@@ -177,6 +302,12 @@ function passStringToWasm0(arg, malloc, realloc) {
 
     WASM_VECTOR_LEN = offset;
     return ptr;
+}
+
+function takeFromExternrefTable0(idx) {
+    const value = wasm.__wbindgen_externrefs.get(idx);
+    wasm.__externref_table_dealloc(idx);
+    return value;
 }
 
 let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
