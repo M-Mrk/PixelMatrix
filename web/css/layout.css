@@ -37,3 +37,9 @@ app {
   justify-content: space-between;
   margin-top: var(--space-sm);
 }
+
+.editor-container {
+  border: 1px solid #ccc;
+  width: 400px;
+  height: 400px;
+}

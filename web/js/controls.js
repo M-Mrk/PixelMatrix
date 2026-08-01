@@ -1,11 +1,10 @@
 import { draw_pixels, clear_canvas } from "./canvas.js";
+import { get_editor } from "./editor.js";
 import _, { run_script, ScriptType } from "../wasm/core_engine.js"
 
 const run_button = document.querySelector('#run-btn');
 const clear_button = document.querySelector('#clear-btn');
 const notification = document.querySelector('#notification-space');
-
-const script_area = document.querySelector('#script-input');
 
 export const init_controls = () => {
   if (!run_button) {
@@ -28,17 +27,13 @@ export const init_controls = () => {
     console.error("notification space not found.");
     return;
   }
-
-  if (!script_area) {
-    console.error("Script input not found");
-    return;
-  }
 };
 
 const run = () => {
   const res = 16;
   try {
-    const pixels = run_script(script_area.value, ScriptType.Rhai, BigInt(res), BigInt(res));
+    let editor = get_editor();
+    const pixels = run_script(editor.getValue(), ScriptType.Rhai, BigInt(res), BigInt(res));
     draw_pixels(pixels, res, res);
   } catch (error) {
     console.error(`Running script resulted in error: ${error.error}`);

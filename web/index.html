@@ -7,15 +7,19 @@
   <title></title>
   <link href="css/style.css" rel="stylesheet">
   <script type="module" src="js/app.js"></script>
+
+  <!-- External JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
 </head>
 
 <body data-theme="dark">
-  <div class="tile">Explanation of what this is</div>
+  <div class="tile">PixelMatix</div>
+  <div class="tile">Explanation Placeholder</div>
   <app class="tile">
     <div id="input-output-container" class="input-output-container">
-      <textarea id="script-input">Write your script here</textarea>
+      <div id="editor-container" style="width: 800px; height: 600px; border: 1px solid var(--border);"></div>
       <div class="seperator"></div>
-      <canvas id="canvas-output" width="400" height="400"></canvas>
+      <canvas id="canvas-output" width="600" height="600"></canvas>
     </div>
     <div class="controls-container">
       <div>
