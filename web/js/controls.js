@@ -1,4 +1,4 @@
-import { draw_pixels, clear_canvas } from "./canvas.js";
+import { draw, clear_all_canvas } from "./canvas.js";
 import { get_editor } from "./editor.js";
 import _, { run_script, ScriptType } from "../wasm/core_engine.js"
 
@@ -31,17 +31,20 @@ export const init_controls = () => {
 
 const run = () => {
   const res = 16;
+  let pixels;
+  console.time("interpreting script");
   try {
     let editor = get_editor();
-    const pixels = run_script(editor.getValue(), ScriptType.Rhai, BigInt(res), BigInt(res));
-    draw_pixels(pixels, res, res);
+    pixels = run_script(editor.getValue(), ScriptType.Rhai, BigInt(res), BigInt(res));
   } catch (error) {
     console.error(`Running script resulted in error: ${error.error}`);
     notification.innerText = error.error;
   }
+  console.timeEnd("interpreting script");
+  draw(pixels, res, res);
 };
 
 const clear = () => {
-  clear_canvas();
+  clear_all_canvas();
   notification.innerText = "";
 }
