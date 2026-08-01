@@ -24,8 +24,8 @@ pub fn run_script(
     let mut buf: Vec<Pixel> = Vec::with_capacity(num_pixels as usize);
     let script_handler = get_script_handler(script_type);
 
-    for x in 0..resolution_width {
-        for y in 0..resolution_height {
+    for y in 0..resolution_height {
+        for x in 0..resolution_width {
             let result = script_handler(&script, x, y, &mut buf);
             if let Err(e) = result {
                 return Err(ErrorOutput::new(buf, e));
