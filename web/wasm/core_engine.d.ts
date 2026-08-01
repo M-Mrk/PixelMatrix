@@ -29,6 +29,7 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
     readonly memory: WebAssembly.Memory;
+    readonly run_script: (a: number, b: number, c: number, d: bigint, e: bigint) => [number, number, number, number];
     readonly __wbg_erroroutput_free: (a: number, b: number) => void;
     readonly __wbg_get_pixel_b: (a: number) => number;
     readonly __wbg_get_pixel_g: (a: number) => number;
@@ -40,7 +41,7 @@ export interface InitOutput {
     readonly erroroutput_error: (a: number) => [number, number];
     readonly erroroutput_new: (a: number, b: number, c: number, d: number) => number;
     readonly erroroutput_pixels: (a: number) => [number, number];
-    readonly run_script: (a: number, b: number, c: number, d: bigint, e: bigint) => [number, number, number, number];
+    readonly __wbindgen_exn_store: (a: number) => void;
     readonly __externref_table_alloc: () => number;
     readonly __wbindgen_externrefs: WebAssembly.Table;
     readonly __wbindgen_free: (a: number, b: number, c: number) => void;

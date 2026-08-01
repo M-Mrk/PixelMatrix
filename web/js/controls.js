@@ -38,12 +38,10 @@ export const init_controls = () => {
 const run = () => {
   const res = 16;
   try {
-    console.debug(script_area.value);
     const pixels = run_script(script_area.value, ScriptType.Rhai, BigInt(res), BigInt(res));
     draw_pixels(pixels, res, res);
   } catch (error) {
-    console.error("running script resulted in error:");
-    console.dir(error.error);
+    console.error(`Running script resulted in error: ${error.error}`);
     notification.innerText = error.error;
   }
 };

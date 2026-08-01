@@ -27,7 +27,6 @@ export const draw_pixels = (pixels, resolution_width, resolution_height) => {
   }
 
   let i_pixel = 0;
-  console.log(pixels[0]);
   for (let row = 0; row < resolution_height; row++) {
     for (let column = 0; column < resolution_width; column++) {
       const pixel = pixels[i_pixel];
