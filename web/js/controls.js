@@ -1,6 +1,6 @@
 import { clear_all_canvas } from "./canvas.js";
 import { get_editor } from "./editor.js";
-import { get_state, get_pipeline } from "./state.js";
+import { get_output } from "./state.js";
 
 const run_button = document.querySelector('#run-btn');
 const clear_button = document.querySelector('#clear-btn');
@@ -30,11 +30,10 @@ export const init_controls = () => {
 };
 
 const run = () => {
-  const state = get_state();
   const script = get_editor().getValue();
-  let pipeline = get_pipeline();
+  let pipeline = get_output().pipeline;
 
-  const result = pipeline(script, state);
+  const result = pipeline(script);
   if (result) {
     notification.innerText = result;
   }

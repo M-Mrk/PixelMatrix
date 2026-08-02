@@ -1,25 +1,52 @@
-import { run as grid_run } from "./outputs/grid.js";
+import { get as get_grid } from "./outputs/grid.js";
 
-const app_state = {
-  output_type: 'grid',
+export const OutputType = Object.freeze({
+  GRID: "grid",
+});
+
+export const Language = Object.freeze({
+  RHAI: "rhai",
+});
+
+const AppState = {
+  output_type: OutputType.GRID,
+  language: Language.RHAI,
 }
 
-export const get_state = () => app_state;
+export const get_state = () => AppState;
 
 export const update_state = (new_state) => {
-  Object.assign(app_state, new_state);
-  window.localStorage.setItem("app_state", JSON.stringify(app_state));
+  const prior_state = AppState;
+
+  Object.assign(AppState, new_state);
+
+  if (prior_state.output_type != AppState.output_type) {
+    const old_output = match_output(prior_state.output_type);
+    old_output.deinit();
+
+    const new_output = match_output(AppState.output_type);
+    new_output.init();
+  }
+
+  window.localStorage.setItem("AppState", JSON.stringify(AppState));
 }
 
-export const get_pipeline = () => {
-  if (app_state.output_type == "grid") {
-    return grid_run;
+export const get_output = () => {
+  return match_output(AppState.output_type);
+}
+
+const match_output = (output_type) => {
+  if (output_type == OutputType.GRID) {
+    return get_grid();
   }
 }
 
 export const init_state = () => {
-  const saved = window.localStorage.getItem("app_state");
+  const saved = window.localStorage.getItem("AppState");
   if (saved) {
-    Object.assign(app_state, JSON.parse(saved))
+    update_state(JSON.parse(saved));
   }
+
+  const output = match_output(AppState.output_type);
+  output.init();
 };

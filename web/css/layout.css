@@ -43,3 +43,10 @@ app {
   width: 400px;
   height: 400px;
 }
+
+.all-settings-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
