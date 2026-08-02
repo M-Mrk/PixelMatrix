@@ -1,0 +1,20 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build:web": "vite build",
+    "build:wasm": "wasm-pack build ../core_engine --target web --out-dir ./pkg/wasm",
+    "build": "npm run build:wasm && npm run build:web",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "M-Mrk",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "devDependencies": {
+    "vite": "^8.2.0"
+  }
+}

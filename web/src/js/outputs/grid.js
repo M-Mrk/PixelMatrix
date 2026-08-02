@@ -1,6 +1,6 @@
 import { html } from "../common.js";
 import { draw } from "../canvas.js";
-import _, { run_script, ScriptType } from "../../wasm/core_engine.js";
+import _, { run_script, ScriptType } from "../../../pkg/wasm/core_engine.js";
 
 const settings_container = document.querySelector('.output-settings-container');
 const id_res_x = "#setting-grid-res-x";
