@@ -1,16 +1,13 @@
-import { html } from "../common.js";
+import { html, Output, get_element } from "../common.js";
 import { draw } from "../canvas.js";
-import _, { run_script, ScriptType } from "../../../pkg/wasm/core_engine.js";
+import _, { ErrorOutput, run_script, ScriptType } from "../../../pkg/wasm/core_engine.js";
 
-const settings_container = document.querySelector('.output-settings-container');
+const settings_container = get_element<HTMLDivElement>('.output-settings-container');
 const id_res_x = "#setting-grid-res-x";
 const id_res_y = "#setting-grid-res-y";
 
-/*
- * @type {Output}
- */
-const grid = {
-  pipeline: (script) => {
+const grid: Output = {
+  pipeline: (script): string | null => {
     return run(script);
   },
   init: () => { initialize() },
@@ -26,13 +23,13 @@ let settings = {
   resolution_y: 16,
 };
 
-const run = (script) => {
+const run = (script: string): string | null => {
   let pixels;
   console.time("interpreting rhai script");
   try {
     pixels = run_script(script, ScriptType.Rhai, BigInt(settings.resolution_x), BigInt(settings.resolution_y));
-  } catch (error) {
-    const error_text = String(error.error);
+  } catch (error: unknown) {
+    const error_text = error as string;
     console.error(`Running script resulted in error: ${error_text}`);
     console.timeEnd("interpreting rhai script")
     return error_text;
@@ -43,8 +40,8 @@ const run = (script) => {
 };
 
 const update_settings_from_page = () => {
-  const setting_res_x = document.querySelector(id_res_x);
-  const setting_res_y = document.querySelector(id_res_y);
+  const setting_res_x = get_element<HTMLInputElement>(id_res_x);
+  const setting_res_y = get_element<HTMLInputElement>(id_res_y);
 
   if (!setting_res_y || !setting_res_x) {
     console.error("Setting input not found");

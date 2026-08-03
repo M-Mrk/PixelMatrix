@@ -1,12 +1,20 @@
-import { get as get_grid } from "./outputs/grid.js";
+import { type Output } from "./common";
+import { get as get_grid } from "./outputs/grid";
 
-export const OutputType = Object.freeze({
+export const OutputType = {
   GRID: "grid",
-});
+} as const;
+export type OutputType = typeof OutputType[keyof typeof OutputType];
 
-export const Language = Object.freeze({
+export const Language = {
   RHAI: "rhai",
-});
+} as const;
+export type Language = typeof Language[keyof typeof Language];
+
+export interface AppState {
+  output_type: OutputType,
+  language: Language,
+}
 
 const AppState = {
   output_type: OutputType.GRID,
@@ -15,7 +23,7 @@ const AppState = {
 
 export const get_state = () => AppState;
 
-export const update_state = (new_state) => {
+export const update_state = (new_state: AppState) => {
   const prior_state = AppState;
 
   Object.assign(AppState, new_state);
@@ -35,9 +43,15 @@ export const get_output = () => {
   return match_output(AppState.output_type);
 }
 
-const match_output = (output_type) => {
+const match_output = (output_type: OutputType): Output => {
+  switch (output_type) {
+    case OutputType.GRID:
+      return get_grid();
+
+    default:
+      throw new Error(`Couldn't get Output interface from output_type of ${output_type}`);
+  }
   if (output_type == OutputType.GRID) {
-    return get_grid();
   }
 }
 

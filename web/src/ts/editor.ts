@@ -1,13 +1,19 @@
-import { throttle } from "./common.js";
+import { throttle, get_element } from "./common";
 
-let editor;
+import type * as Monaco from "monaco-editor";
+declare const require: any;
+declare const monaco: typeof Monaco;
 
-export const get_editor = () => {
+let editor: Monaco.editor.IStandaloneCodeEditor | undefined;
+
+const editor_container = get_element<HTMLDivElement>('#editor-container');
+
+export const get_editor = (): Monaco.editor.IStandaloneCodeEditor => {
   if (!editor) {
-    console.warn("editor not initialized yet.")
+    throw new Error("editor not initialized yet.");
   }
   return editor;
-}
+};
 
 const content_changed = () => {
   if (!editor) {
@@ -16,7 +22,7 @@ const content_changed = () => {
   }
   console.debug("Backing up script");
   window.localStorage.setItem("script", editor.getValue());
-}
+};
 
 export const init_editor = () => {
   let last_script = window.localStorage.getItem("script");
@@ -35,8 +41,8 @@ export const init_editor = () => {
   }
 
   require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' } });
-  require(['vs/editor/editor.main'], function() {
-    editor = monaco.editor.create(document.getElementById('editor-container'), {
+  require(['vs/editor/editor.main'], function () {
+    editor = monaco.editor.create(editor_container, {
       value: last_script,
       language: 'rust', // Rhai doesn't have a built-in syntax, but 'rust' looks very close!
       theme: 'vs-dark',
