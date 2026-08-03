@@ -16,7 +16,7 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "devDependencies": {
-    "monaco-editor": "^0.56.0",
+    "monaco-editor": "^0.53.0",
     "typescript": "^7.0.2",
     "vite": "^8.2.0"
   }
