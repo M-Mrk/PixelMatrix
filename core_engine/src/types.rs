@@ -24,24 +24,31 @@ impl Pixel {
 }
 
 #[wasm_bindgen]
+#[derive(Debug, Clone, Copy)]
+pub struct Position {
+    pub line: i32,
+    pub char: i32,
+}
+
+#[wasm_bindgen]
 #[derive(Debug, Clone)]
 pub struct ErrorOutput {
-    pixels: Vec<Pixel>,
-    error: String,
+    text: String,
+    position: Option<Position>,
 }
 #[wasm_bindgen]
 impl ErrorOutput {
-    pub fn new(pixels: Vec<Pixel>, error: String) -> Self {
-        Self { pixels, error }
+    pub fn new(text: String, position: Option<Position>) -> Self {
+        Self { text, position }
     }
 
     #[wasm_bindgen(getter)]
-    pub fn error(&self) -> String {
-        self.error.clone()
+    pub fn text(&self) -> String {
+        self.text.clone()
     }
 
     #[wasm_bindgen(getter)]
-    pub fn pixels(&self) -> Vec<Pixel> {
-        self.pixels.clone()
+    pub fn position(&self) -> Option<Position> {
+        self.position.clone()
     }
 }

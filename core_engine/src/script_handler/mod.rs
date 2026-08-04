@@ -28,7 +28,7 @@ pub fn run_script(
         for x in 0..resolution_width {
             let result = script_handler(&script, x, y, &mut buf);
             if let Err(e) = result {
-                return Err(ErrorOutput::new(buf, e));
+                return Err(ErrorOutput::new(e, None));
             }
         }
     }

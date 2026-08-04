@@ -1,38 +1,24 @@
-import { html, Output, get_element } from "../common.js";
-import { draw } from "../canvas.js";
-import _, { ErrorOutput, run_script, ScriptType } from "../../../pkg/wasm/core_engine.js";
+import { html, Output, get_element } from "../common";
+import { draw } from "../canvas";
+import _, { ErrorOutput, run_script, ScriptType } from "../../../pkg/wasm/core_engine";
 
 const settings_container = get_element<HTMLDivElement>('.output-settings-container');
 const id_res_x = "#setting-grid-res-x";
 const id_res_y = "#setting-grid-res-y";
-
-const grid: Output = {
-  pipeline: (script): string | null => {
-    return run(script);
-  },
-  init: () => { initialize() },
-  deinit: () => { deinitialize() },
-};
-
-export const get = () => {
-  return grid;
-};
 
 let settings = {
   resolution_x: 16,
   resolution_y: 16,
 };
 
-const run = (script: string): string | null => {
+const run = (script: string): ErrorOutput | null => {
   let pixels;
   console.time("interpreting rhai script");
   try {
     pixels = run_script(script, ScriptType.Rhai, BigInt(settings.resolution_x), BigInt(settings.resolution_y));
   } catch (error: unknown) {
-    const error_text = error as string;
-    console.error(`Running script resulted in error: ${error_text}`);
     console.timeEnd("interpreting rhai script")
-    return error_text;
+    return error as ErrorOutput;
   }
   console.timeEnd("interpreting rhai script");
   draw(pixels, settings.resolution_x, settings.resolution_y);
@@ -94,4 +80,14 @@ const initialize = () => {
 
 const deinitialize = () => {
   settings_container.removeEventListener('input', update_settings_from_page);
+};
+
+const grid: Output = {
+  pipeline: run,
+  init: () => { initialize() },
+  deinit: () => { deinitialize() },
+};
+
+export const get = () => {
+  return grid;
 };

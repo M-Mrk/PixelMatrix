@@ -1,3 +1,5 @@
+import { ErrorOutput } from "../../pkg/wasm/core_engine";
+
 export const throttle = (fn: Function, delay: number) => {
   let isThr = false;
 
@@ -14,7 +16,7 @@ export const throttle = (fn: Function, delay: number) => {
 }
 
 export interface Output {
-  pipeline(script: string): string | null,
+  pipeline(script: string): ErrorOutput | null,
   init(): void,
   deinit(): void,
 };

@@ -1,7 +1,7 @@
 import { get_element } from "./common";
-import { clear_all_canvas } from "./canvas.js";
-import { get_editor } from "./editor.js";
-import { get_output } from "./state.js";
+import { clear_all_canvas } from "./canvas";
+import { get_editor } from "./editor";
+import { get_output } from "./state";
 
 const run_button = get_element<HTMLButtonElement>('#run-btn');
 const clear_button = get_element<HTMLButtonElement>('#clear-btn');
@@ -23,7 +23,8 @@ const run = () => {
 
   const result = pipeline(script);
   if (result) {
-    notification.innerText = result;
+    console.error("Running script failed: " + result.text);
+    notification.innerText = result.text;
   }
 };
 
