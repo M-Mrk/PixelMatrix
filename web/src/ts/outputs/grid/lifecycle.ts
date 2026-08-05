@@ -1,28 +1,12 @@
-import { html, Output, get_element } from "../common";
-import { draw } from "../canvas";
-import _, { ErrorOutput, run_script, ScriptType } from "../../../pkg/wasm/core_engine";
+import { get_element, html } from "../../common";
 
 const settings_container = get_element<HTMLDivElement>('.output-settings-container');
 const id_res_x = "#setting-grid-res-x";
 const id_res_y = "#setting-grid-res-y";
 
-let settings = {
+export let settings = {
   resolution_x: 16,
   resolution_y: 16,
-};
-
-const run = (script: string): ErrorOutput | null => {
-  let pixels;
-  console.time("interpreting rhai script");
-  try {
-    pixels = run_script(script, ScriptType.Rhai, BigInt(settings.resolution_x), BigInt(settings.resolution_y));
-  } catch (error: unknown) {
-    console.timeEnd("interpreting rhai script")
-    return error as ErrorOutput;
-  }
-  console.timeEnd("interpreting rhai script");
-  draw(pixels, settings.resolution_x, settings.resolution_y);
-  return null;
 };
 
 const update_settings_from_page = () => {
@@ -54,7 +38,7 @@ const update_settings_from_page = () => {
   window.localStorage.setItem('grid-settings', JSON.stringify(settings));
 };
 
-const initialize = () => {
+export const init = () => {
   const saved_settings = window.localStorage.getItem('grid-settings');
   if (saved_settings) {
     settings = JSON.parse(saved_settings);
@@ -78,16 +62,6 @@ const initialize = () => {
 
 };
 
-const deinitialize = () => {
+export const deinit = () => {
   settings_container.removeEventListener('input', update_settings_from_page);
-};
-
-const grid: Output = {
-  pipeline: run,
-  init: () => { initialize() },
-  deinit: () => { deinitialize() },
-};
-
-export const get = () => {
-  return grid;
 };

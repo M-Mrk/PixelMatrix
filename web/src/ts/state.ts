@@ -1,5 +1,5 @@
 import { type Output } from "./common";
-import { get as get_grid } from "./outputs/grid";
+import { grid } from "./outputs/grid";
 
 export const OutputType = {
   GRID: "grid",
@@ -46,7 +46,7 @@ export const get_output = () => {
 const match_output = (output_type: OutputType): Output => {
   switch (output_type) {
     case OutputType.GRID:
-      return get_grid();
+      return grid;
 
     default:
       throw new Error(`Couldn't get Output interface from output_type of ${output_type}`);
