@@ -1,4 +1,5 @@
 use std::sync::Once;
+use wasm_bindgen::Clamped;
 use wasm_bindgen::prelude::*;
 
 use super::types::{ErrorOutput, Pixel, ScriptType};
@@ -9,12 +10,12 @@ mod rhai_handler;
 static INIT_LOGGER: Once = Once::new();
 
 #[wasm_bindgen]
-pub fn run_script(
+pub fn run_grid(
     script: String,
     script_type: ScriptType,
     resolution_width: i64,
     resolution_height: i64,
-) -> Result<Vec<Pixel>, ErrorOutput> {
+) -> Result<Clamped<Vec<u8>>, ErrorOutput> {
     INIT_LOGGER.call_once(|| {
         console_log::init_with_level(log::Level::Trace).expect("Error initializing logging");
         log_panics::init();
@@ -33,7 +34,11 @@ pub fn run_script(
         }
     }
 
-    Ok(buf)
+    let rgba: Vec<u8> = buf
+        .iter()
+        .flat_map(|pixel| [pixel.r, pixel.g, pixel.b, 255])
+        .collect();
+    Ok(Clamped(rgba))
 }
 
 fn get_script_handler(

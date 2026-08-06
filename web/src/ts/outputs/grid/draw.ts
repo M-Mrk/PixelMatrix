@@ -1,44 +1,21 @@
-import { Pixel } from "../../../../pkg/wasm/core_engine";
 import { get_element } from "../../common";
 import { output_canvas } from "../../canvas";
 
 const hidden_canvas = get_element<HTMLCanvasElement>('#canvas-hidden');
 
-const create_image = (pixels: Pixel[], resolution_width: number, resolution_height: number): ImageData => {
-  const image_size = resolution_width * resolution_height * 4; // RGBA - 4 bytes
+const create_image = (pixels: Uint8ClampedArray, resolution_width: number, resolution_height: number): ImageData => {
   const needed_pixels = resolution_width * resolution_height;
-  const given_pixels = pixels.length;
-  if (given_pixels > needed_pixels) {
-    throw new Error(`Cannot create image - too many pixels received: ${given_pixels} when only ${needed_pixels} are needed.`);
+  const given_pixels = pixels.length / 4; // one pixel has 4 values
+  if (given_pixels != needed_pixels) {
+    throw new Error(`Cannot create image - wrong amount of pixels received: ${given_pixels} when ${needed_pixels} are needed.`);
   }
 
-  let buf = new Uint8ClampedArray(image_size);
-  let i_buf = 0;
-  for (let i_pixel = 0; i_pixel < pixels.length; i_pixel++) {
-    const pixel = pixels[i_pixel];
-    if (!pixel) throw new Error(`pixel at index ${i_pixel} is missing`);
-
-    buf[i_buf] = pixel.r;
-    buf[i_buf + 1] = pixel.g;
-    buf[i_buf + 2] = pixel.b;
-    buf[i_buf + 3] = 255; // Fully opaque
-    i_buf += 4;
-  }
-
-  const missing_pixels = needed_pixels - given_pixels;
-  for (let i_pixel = 0; i_pixel < missing_pixels; i_pixel++) {
-    buf[i_buf] = 0;
-    buf[i_buf + 1] = 0;
-    buf[i_buf + 2] = 0;
-    buf[i_buf + 3] = 255;
-    i_buf += 4;
-  }
-
+  const local_pixels = new Uint8ClampedArray(pixels); // Needed to make sure pixels are saved in local memory
   const settings = {
     colorSpace: "display-p3",
     pixelFormat: "rgba-unorm8",
   } as unknown as ImageDataSettings;
-  return new ImageData(buf, resolution_width, resolution_height, settings);
+  return new ImageData(local_pixels, resolution_width, resolution_height, settings);
 };
 
 const draw_hidden_image = (image: ImageData, resolution_width: number, resolution_height: number) => {
@@ -79,7 +56,7 @@ const transfer_hidden_image = () => {
   ctx.drawImage(hidden_canvas, 0, 0, output_canvas.width, output_canvas.height);
 }
 
-export const full_draw = (pixels: Pixel[], resolution_width: number, resolution_height: number) => {
+export const full_draw = (pixels: Uint8ClampedArray, resolution_width: number, resolution_height: number) => {
   console.time("drawing");
   const image = create_image(pixels, resolution_width, resolution_height);
   draw_hidden_image(image, resolution_width, resolution_height);

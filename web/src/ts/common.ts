@@ -1,9 +1,7 @@
-import { ErrorOutput } from "../../pkg/wasm/core_engine";
-
 export const throttle = (fn: Function, delay: number) => {
   let isThr = false;
 
-  return function (this: any, ...args: any): void {
+  return function(this: any, ...args: any): void {
     if (!isThr) {
       fn.apply(this, args);
       isThr = true;
@@ -14,12 +12,6 @@ export const throttle = (fn: Function, delay: number) => {
     }
   }
 }
-
-export interface Output {
-  pipeline(script: string): ErrorOutput | null,
-  init(): void,
-  deinit(): void,
-};
 
 export const html = (strings: TemplateStringsArray, ...values: any[]) => {
   return strings.reduce((result, string, i) => {

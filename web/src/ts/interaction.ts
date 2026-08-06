@@ -2,6 +2,7 @@ import { get_element, spinner_html } from "./common";
 import { clear_all_canvas } from "./canvas";
 import { get_editor } from "./editor";
 import { get_output } from "./state";
+import { ScriptError } from "./types";
 
 const run_button = get_element<HTMLButtonElement>('#run-btn');
 const clear_button = get_element<HTMLButtonElement>('#clear-btn');
@@ -17,7 +18,7 @@ export const init_controls = () => {
   })
 };
 
-const run = () => {
+const run = async () => {
   notification.innerText = "";
 
   run_button.innerHTML = spinner_html;
@@ -25,10 +26,14 @@ const run = () => {
   const script = get_editor().getValue();
   let pipeline = get_output().pipeline;
 
-  const result = pipeline(script);
+  const result = await pipeline(script);
   if (result) {
-    console.error("Running script failed: " + result.text);
-    notification.innerText = result.text;
+    if (result instanceof ScriptError) {
+      console.error("Running script failed: " + result.text);
+      notification.innerText = result.text;
+    } else {
+      notification.innerText = "Pipeline error!"
+    }
   }
 
   run_button.innerText = "Run";

@@ -1,4 +1,4 @@
-import { Output } from "../../common";
+import { Output } from "../../types";
 
 import { init, deinit } from "./lifecycle";
 import { run } from "./run";

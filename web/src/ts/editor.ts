@@ -20,7 +20,7 @@ const content_changed = () => {
     console.warn("editor not initialized yet.")
     return;
   }
-  console.debug("Backing up script");
+  console.log("Backing up script");
   window.localStorage.setItem("script", editor.getValue());
 };
 
@@ -41,7 +41,7 @@ export const init_editor = () => {
   }
 
   require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' } });
-  require(['vs/editor/editor.main'], function () {
+  require(['vs/editor/editor.main'], function() {
     editor = monaco.editor.create(editor_container, {
       value: last_script,
       language: 'rust', // Rhai doesn't have a built-in syntax, but 'rust' looks very close!

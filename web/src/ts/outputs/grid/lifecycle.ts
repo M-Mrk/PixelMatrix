@@ -13,11 +13,6 @@ const update_settings_from_page = () => {
   const setting_res_x = get_element<HTMLInputElement>(id_res_x);
   const setting_res_y = get_element<HTMLInputElement>(id_res_y);
 
-  if (!setting_res_y || !setting_res_x) {
-    console.error("Setting input not found");
-    return;
-  }
-
   if (!setting_res_x.value || !setting_res_y.value) {
     console.warn(`No resolution set. Defaulting to 16x16.`);
     settings.resolution_x = 16;

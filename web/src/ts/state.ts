@@ -1,46 +1,31 @@
-import { type Output } from "./common";
+import { Output, OutputType, Language, AppState } from "./types";
 import { grid } from "./outputs/grid";
 
-export const OutputType = {
-  GRID: "grid",
-} as const;
-export type OutputType = typeof OutputType[keyof typeof OutputType];
-
-export const Language = {
-  RHAI: "rhai",
-} as const;
-export type Language = typeof Language[keyof typeof Language];
-
-export interface AppState {
-  output_type: OutputType,
-  language: Language,
-}
-
-const AppState = {
+const app_state = {
   output_type: OutputType.GRID,
   language: Language.RHAI,
 }
 
-export const get_state = () => AppState;
+export const get_state = () => app_state;
 
 export const update_state = (new_state: AppState) => {
-  const prior_state = AppState;
+  const prior_state = app_state;
 
-  Object.assign(AppState, new_state);
+  Object.assign(app_state, new_state);
 
-  if (prior_state.output_type != AppState.output_type) {
+  if (prior_state.output_type != app_state.output_type) {
     const old_output = match_output(prior_state.output_type);
     old_output.deinit();
 
-    const new_output = match_output(AppState.output_type);
+    const new_output = match_output(app_state.output_type);
     new_output.init();
   }
 
-  window.localStorage.setItem("AppState", JSON.stringify(AppState));
+  window.localStorage.setItem("app_state", JSON.stringify(app_state));
 }
 
 export const get_output = () => {
-  return match_output(AppState.output_type);
+  return match_output(app_state.output_type);
 }
 
 const match_output = (output_type: OutputType): Output => {
@@ -51,16 +36,14 @@ const match_output = (output_type: OutputType): Output => {
     default:
       throw new Error(`Couldn't get Output interface from output_type of ${output_type}`);
   }
-  if (output_type == OutputType.GRID) {
-  }
 }
 
 export const init_state = () => {
-  const saved = window.localStorage.getItem("AppState");
+  const saved = window.localStorage.getItem("app_state");
   if (saved) {
     update_state(JSON.parse(saved));
   }
 
-  const output = match_output(AppState.output_type);
+  const output = match_output(app_state.output_type);
   output.init();
 };
