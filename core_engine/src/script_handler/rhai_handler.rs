@@ -1,9 +1,15 @@
 use rhai::{Engine, Scope};
 
 use super::common::rand;
-use crate::types::Pixel;
+use crate::types::{GridSettings, Pixel};
 
-pub fn run_rhai(script: &str, x: i32, y: i32, buf: &mut Vec<Pixel>) -> Result<(), String> {
+pub fn run_rhai(
+    script: &str,
+    x: i32,
+    y: i32,
+    settings: &GridSettings,
+    buf: &mut Vec<Pixel>,
+) -> Result<(), String> {
     let mut engine = Engine::new();
     engine.register_fn("rand", rand);
 
@@ -46,10 +52,21 @@ pub fn run_rhai(script: &str, x: i32, y: i32, buf: &mut Vec<Pixel>) -> Result<()
     }
 
     if script_color.iter().any(|val| *val > 255_i64) {
-        return Err(format!(
-            "Bad return! '{:?}' can not be used as 3 8-bit unsigned integers. Make sure all 3 values are not more than 255.",
-            script_color
-        ));
+        if !settings.clamp {
+            return Err(format!(
+                "Bad return! '{:?}' can not be used as 3 8-bit unsigned integers. Make sure all 3 values are not more than 255.",
+                script_color
+            ));
+        }
+        script_color = script_color
+            .iter()
+            .map(|val| {
+                if *val > 255 {
+                    return 255;
+                }
+                return *val;
+            })
+            .collect();
     }
 
     let mut color: (u8, u8, u8) = (255, 255, 255);

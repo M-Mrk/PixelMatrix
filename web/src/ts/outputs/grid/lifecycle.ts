@@ -4,10 +4,12 @@ import { get_element, html } from "../../common";
 const settings_container = get_element<HTMLDivElement>('.output-settings-container');
 const id_res_x = "#setting-grid-res-x";
 const id_res_y = "#setting-grid-res-y";
+const id_clamp = "#setting-grid-clamp";
 
 export let settings: GridSettings = {
   res_x: 16,
   res_y: 16,
+  clamp: false,
 };
 
 const update_settings_from_page = () => {
@@ -31,6 +33,9 @@ const update_settings_from_page = () => {
   settings.res_x = res_x;
   settings.res_y = res_y;
 
+  const setting_clamp = get_element<HTMLInputElement>(id_clamp);
+  settings.clamp = setting_clamp.checked;
+
   window.localStorage.setItem('grid-settings', JSON.stringify(settings));
 };
 
@@ -47,13 +52,23 @@ export const init = () => {
       x
       <input type="number" name="Resolution height" value="${settings.res_y}" min="1" step="1" id="setting-grid-res-y">
     </div>
-  `
+    <div>
+    <input type="checkbox" name="Auto clamp output" id="setting-grid-clamp">
+    <label for="setting-grid-clamp">Auto clamp output</label>
+    </div>
+    `
 
   if (!settings_container) {
     console.error("Settings container not found");
     return;
   }
   settings_container.innerHTML = settings_html;
+
+  if (settings.clamp) {
+    const setting_clamp = get_element<HTMLInputElement>(id_clamp);
+    setting_clamp.checked = true;
+  }
+
   settings_container.addEventListener('input', update_settings_from_page);
 
 };

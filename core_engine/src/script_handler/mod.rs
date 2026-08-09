@@ -28,7 +28,7 @@ pub fn run_grid(
 
     for y in 0..settings.res_y {
         for x in 0..settings.res_x {
-            let result = script_handler(&script, x, y, &mut buf);
+            let result = script_handler(&script, x, y, &settings, &mut buf);
             if let Err(e) = result {
                 return Err(ErrorOutput::new(e, None));
             }
@@ -44,7 +44,7 @@ pub fn run_grid(
 
 fn get_script_handler(
     script_type: ScriptType,
-) -> fn(&str, i32, i32, &mut Vec<Pixel>) -> Result<(), String> {
+) -> fn(&str, i32, i32, &GridSettings, &mut Vec<Pixel>) -> Result<(), String> {
     match script_type {
         ScriptType::Rhai => rhai_handler::run_rhai,
     }
