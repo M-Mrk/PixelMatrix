@@ -1,12 +1,13 @@
+import { GridSettings } from "../../../../pkg/wasm/core_engine";
 import { get_element, html } from "../../common";
 
 const settings_container = get_element<HTMLDivElement>('.output-settings-container');
 const id_res_x = "#setting-grid-res-x";
 const id_res_y = "#setting-grid-res-y";
 
-export let settings = {
-  resolution_x: 16,
-  resolution_y: 16,
+export let settings: GridSettings = {
+  res_x: 16,
+  res_y: 16,
 };
 
 const update_settings_from_page = () => {
@@ -15,8 +16,8 @@ const update_settings_from_page = () => {
 
   if (!setting_res_x.value || !setting_res_y.value) {
     console.warn(`No resolution set. Defaulting to 16x16.`);
-    settings.resolution_x = 16;
-    settings.resolution_y = 16;
+    settings.res_x = 16;
+    settings.res_y = 16;
     return
   }
 
@@ -27,8 +28,8 @@ const update_settings_from_page = () => {
     res_x = 16;
     res_y = 16;
   }
-  settings.resolution_x = res_x;
-  settings.resolution_y = res_y;
+  settings.res_x = res_x;
+  settings.res_y = res_y;
 
   window.localStorage.setItem('grid-settings', JSON.stringify(settings));
 };
@@ -42,9 +43,9 @@ export const init = () => {
   const settings_html = html`
     <div>
       Resolution
-      <input type="number" name="Resolution width" value="${settings.resolution_x}" min="1" step="1" id="setting-grid-res-x">
+      <input type="number" name="Resolution width" value="${settings.res_x}" min="1" step="1" id="setting-grid-res-x">
       x
-      <input type="number" name="Resolution height" value="${settings.resolution_y}" min="1" step="1" id="setting-grid-res-y">
+      <input type="number" name="Resolution height" value="${settings.res_y}" min="1" step="1" id="setting-grid-res-y">
     </div>
   `
 

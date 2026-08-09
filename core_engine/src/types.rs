@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -51,4 +53,11 @@ impl ErrorOutput {
     pub fn position(&self) -> Option<Position> {
         self.position.clone()
     }
+}
+
+#[derive(Serialize, Deserialize, Tsify)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct GridSettings {
+    pub res_x: i32,
+    pub res_y: i32,
 }

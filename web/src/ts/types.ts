@@ -1,4 +1,4 @@
-import { ErrorOutput } from "../../pkg/wasm/core_engine";
+import { ErrorOutput, GridSettings } from "../../pkg/wasm/core_engine";
 
 export interface AppState {
   output_type: OutputType,
@@ -24,7 +24,7 @@ export interface Output {
 export interface WorkerMessage {
   script: string,
   state: AppState,
-  config: any,
+  config: GridSettings, // Add new settings here
 };
 
 export class ScriptError {

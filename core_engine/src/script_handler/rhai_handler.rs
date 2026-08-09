@@ -3,13 +3,13 @@ use rhai::{Engine, Scope};
 use super::common::rand;
 use crate::types::Pixel;
 
-pub fn run_rhai(script: &str, x: i64, y: i64, buf: &mut Vec<Pixel>) -> Result<(), String> {
+pub fn run_rhai(script: &str, x: i32, y: i32, buf: &mut Vec<Pixel>) -> Result<(), String> {
     let mut engine = Engine::new();
     engine.register_fn("rand", rand);
 
     let mut scope = Scope::new();
-    scope.push_constant("x", x);
-    scope.push_constant("y", y);
+    scope.push_constant("x", x as i64);
+    scope.push_constant("y", y as i64);
 
     let script_return = engine.eval_with_scope::<rhai::Array>(&mut scope, script);
     if let Err(err) = script_return {

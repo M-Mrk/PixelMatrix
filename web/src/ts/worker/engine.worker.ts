@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 
 import init, { run_grid, ScriptType, ErrorOutput } from "../../../pkg/wasm/core_engine";
-import { WorkerMessage, AppState, OutputType, Language, ScriptError } from "../types";
+import { WorkerMessage, OutputType, Language, ScriptError } from "../types";
 
 let wasm_loaded = init();
 
@@ -25,7 +25,7 @@ self.onmessage = async (event) => {
   try {
     switch (state.output_type) {
       case OutputType.GRID:
-        const pixels = run_grid(script, lang, BigInt(config.width), BigInt(config.height)); // returns a Uint8ClampedArray
+        const pixels = run_grid(script, lang, config); // returns a Uint8ClampedArray
 
         console.log("returning data for grid from engine worker");
         self.postMessage({ id, status: 'success', data: pixels }, [pixels.buffer]);

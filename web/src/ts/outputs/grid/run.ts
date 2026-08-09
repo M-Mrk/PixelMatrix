@@ -1,4 +1,3 @@
-import { ErrorOutput } from "../../../../pkg/wasm/core_engine";
 import { settings } from "./lifecycle";
 import { full_draw } from "./draw";
 import { execute } from "../../worker/executor";
@@ -12,10 +11,7 @@ export const run = async (script: string): Promise<any | null> => {
     const msg: WorkerMessage = {
       script: script,
       state: get_state(),
-      config: {
-        width: settings.resolution_x,
-        height: settings.resolution_y,
-      }
+      config: settings,
     }
     pixels = await execute(msg);
   } catch (error) {
@@ -23,6 +19,6 @@ export const run = async (script: string): Promise<any | null> => {
     return error;
   }
   console.timeEnd("interpreting rhai script");
-  full_draw(pixels, settings.resolution_x, settings.resolution_y);
+  full_draw(pixels, settings.res_x, settings.res_y);
   return null;
 };
