@@ -1,9 +1,10 @@
 import { Output, OutputType, Language, AppState } from "./types";
 import { grid } from "./outputs/grid";
 
-const app_state = {
+const app_state: AppState = {
   output_type: OutputType.GRID,
   language: Language.RHAI,
+  hot_reload: false,
 }
 
 export const get_state = () => app_state;
@@ -21,7 +22,7 @@ export const update_state = (new_state: AppState) => {
     new_output.init();
   }
 
-  window.localStorage.setItem("app_state", JSON.stringify(app_state));
+  window.localStorage.setItem("app-state", JSON.stringify(app_state));
 }
 
 export const get_output = () => {
@@ -39,7 +40,7 @@ const match_output = (output_type: OutputType): Output => {
 }
 
 export const init_state = () => {
-  const saved = window.localStorage.getItem("app_state");
+  const saved = window.localStorage.getItem("app-state");
   if (saved) {
     update_state(JSON.parse(saved));
   }

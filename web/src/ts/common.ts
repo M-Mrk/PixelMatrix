@@ -13,6 +13,19 @@ export const throttle = (fn: Function, delay: number) => {
   }
 }
 
+export const debounce = (fn: Function, delay: number) => {
+  let timer_id: number;
+  return function(this: any, ...args: any): void {
+    if (timer_id) {
+      clearTimeout(timer_id);
+    }
+
+    timer_id = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  }
+}
+
 export const html = (strings: TemplateStringsArray, ...values: any[]) => {
   return strings.reduce((result, string, i) => {
     return result + string + (values[i] || '');

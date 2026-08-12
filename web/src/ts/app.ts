@@ -3,6 +3,7 @@ import { init_workers } from "./worker/executor"
 import { init_state } from "./state";
 import { init_editor } from "./editor";
 import { init_controls } from "./interaction";
+import { init_settings } from "./settings";
 
 document.addEventListener('DOMContentLoaded', async () => {
   init_state();
@@ -10,4 +11,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   init_workers();
   await wasm_init();
   init_controls();
+  init_settings();
 });

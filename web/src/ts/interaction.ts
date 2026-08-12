@@ -10,7 +10,7 @@ const notification = get_element<HTMLDivElement>('#notification-space');
 
 export const init_controls = () => {
   run_button.addEventListener('click', () => {
-    run();
+    run_pipeline();
   });
 
   clear_button.addEventListener('click', () => {
@@ -18,7 +18,7 @@ export const init_controls = () => {
   })
 };
 
-const run = async () => {
+export const run_pipeline = async () => {
   notification.innerText = "";
 
   run_button.innerHTML = spinner_html;

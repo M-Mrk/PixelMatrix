@@ -1,6 +1,8 @@
-import { throttle, get_element } from "./common";
+import { throttle, get_element, debounce } from "./common";
 
 import type * as Monaco from "monaco-editor";
+import { run_pipeline } from "./interaction";
+import { get_state } from "./state";
 declare const require: any;
 declare const monaco: typeof Monaco;
 
@@ -15,13 +17,28 @@ export const get_editor = (): Monaco.editor.IStandaloneCodeEditor => {
   return editor;
 };
 
+const throttled_backup = throttle(() => {
+  const editor = get_editor();
+  console.log("Backing up script");
+  window.localStorage.setItem("script", editor.getValue());
+}, 500);
+
+const debounced_hot_reload = debounce(() => {
+  console.log("Hot reloading");
+  run_pipeline();
+}, 1000);
+
 const content_changed = () => {
   if (!editor) {
     console.warn("editor not initialized yet.")
     return;
   }
-  console.log("Backing up script");
-  window.localStorage.setItem("script", editor.getValue());
+  throttled_backup();
+
+  const state = get_state();
+  if (state.hot_reload) {
+    debounced_hot_reload();
+  }
 };
 
 export const init_editor = () => {
@@ -51,8 +68,6 @@ export const init_editor = () => {
       }
     });
 
-    editor.onDidChangeModelContent(throttle(() => {
-      content_changed();
-    }, 500));
+    editor.onDidChangeModelContent(content_changed);
   });
 }

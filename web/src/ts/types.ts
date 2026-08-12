@@ -3,6 +3,7 @@ import { ErrorOutput, GridSettings } from "../../pkg/wasm/core_engine";
 export interface AppState {
   output_type: OutputType,
   language: Language,
+  hot_reload: boolean,
 }
 
 export const OutputType = {
