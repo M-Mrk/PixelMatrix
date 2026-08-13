@@ -1,16 +1,9 @@
 [data-theme="dark"] {
-  --bg: #121212;
-  --surface: #1e1e1e;
-  --surface-hover: #292929;
+  --bg-0: #121212;
+  --bg-1: #404040;
+  --bg-2: #707070;
+  --bg-3: #909090;
 
-  --text: #eeeeee;
-  --text-muted: #999999;
-
-  --border: #444444;
-
-  --accent: #66aaff;
-  --accent-hover: #88bbff;
-
-  --danger: #ff6666;
-  --success: #66cc66;
+  --font: os;
+  --font-color: #ffffff;
 }

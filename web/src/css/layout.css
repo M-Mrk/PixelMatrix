@@ -2,7 +2,7 @@ body {
   margin: 0;
 
   background: var(--bg);
-  color: var(--text);
+  color: var(--font-color);
 
   font-family: var(--font);
 
@@ -11,42 +11,74 @@ body {
   align-items: center;
 }
 
-app {
-  background: var(--surface);
-}
-
-.tile {
-  padding: var(--space-md);
-  margin: var(--space-md);
-  background: var(--surface);
-  border-radius: var(--radius-md);
-}
-
-.input-output-container {
-  min-width: 25vw;
+.workspace {
   display: grid;
-  grid-template-columns: 1fr 0.05fr 1fr;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: 0.1fr 1fr 0.4fr;
+  gap: 0px;
+
+  width: 100vw;
+  height: 100vh;
+
+  background-color: var(--bg-0);
+}
+
+.tabbar {
+  display: none;
+}
+
+.topbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  padding-left: 12px;
+  padding-right: 12px;
+
+}
+
+.top-interactives {
+  display: flex;
+  flex-direction: row;
+  gap: 200px;
+}
+
+.top-tools {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.in-out-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
-  grid-column-gap: 30px;
-  grid-row-gap: 0px;
+  gap: 0px 0px;
+
+  background-color: var(--bg-1);
 }
 
-.controls-container {
+.outer-out-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.1fr 1fr;
+  gap: 0px 0px;
+}
+
+.output-toolbar {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  margin-top: var(--space-sm);
+  gap: 0px 0px;
+
+  align-items: center;
+  background-color: var(--bg-3);
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
-.editor-container {
-  border: 1px solid #ccc;
-  width: 400px;
-  height: 400px;
-}
-
-.all-settings-container {
+.inner-out-container {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: var(--space-sm);
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-2);
 }

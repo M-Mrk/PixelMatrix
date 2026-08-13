@@ -6,7 +6,7 @@ import { ScriptError } from "./types";
 
 const run_button = get_element<HTMLButtonElement>('#run-btn');
 const clear_button = get_element<HTMLButtonElement>('#clear-btn');
-const notification = get_element<HTMLDivElement>('#notification-space');
+const notification = get_element<HTMLDivElement>('#output-console');
 
 export const init_controls = () => {
   run_button.addEventListener('click', () => {

@@ -1,7 +1,7 @@
 import { GridSettings } from "../../../../pkg/wasm/core_engine";
 import { get_element, html } from "../../common";
 
-const settings_container = get_element<HTMLDivElement>('.output-settings-container');
+const settings_container = get_element<HTMLDivElement>('.output-toolbar');
 const id_res_x = "#setting-grid-res-x";
 const id_res_y = "#setting-grid-res-y";
 const id_clamp = "#setting-grid-clamp";

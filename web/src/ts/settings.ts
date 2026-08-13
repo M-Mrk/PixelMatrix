@@ -2,11 +2,9 @@ import { get_element } from "./common";
 import { get_state, update_state } from "./state";
 import { AppState, Language, OutputType } from "./types";
 
-const main_container = get_element<HTMLDivElement>('.general-settings-container');
+const main_container = get_element<HTMLDivElement>('#top-settings');
 const language_select = get_element<HTMLSelectElement>('#setting-language');
 const output_select = get_element<HTMLSelectElement>('#setting-output-type');
-
-const second_container = get_element<HTMLDivElement>('.controls-container');
 const hot_reload_check = get_element<HTMLInputElement>('#setting-hot-reload');
 
 export const init_settings = () => {
@@ -17,7 +15,6 @@ export const init_settings = () => {
   hot_reload_check.checked = state.hot_reload;
 
   main_container.addEventListener('input', () => { load_from_page() });
-  second_container.addEventListener('input', () => { load_from_page() });
 };
 
 const load_from_page = () => {

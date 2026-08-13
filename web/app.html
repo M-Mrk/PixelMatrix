@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link href="src/css/style.css" rel="stylesheet">
+</head>
+
+<body data-theme="dark">
+  <div id="workspace" class="workspace" data-focused="code">
+    <div id="topbar" class="topbar">
+      <div>
+        PixelMatrix
+      </div>
+      <div class="top-interactives">
+        <div id="top-settings">
+          <select id="setting-language">
+            <option value="rhai">Rhai</option>
+          </select>
+          <select id="setting-output-type">
+            <option value="grid">Grid</option>
+          </select>
+          <input type="checkbox" name="hot-reload" id="setting-hot-reload">
+          <label for="setting-hot-reload">Hot reload</label>
+        </div>
+        <div id="top-tools">
+          <button id="run-btn">Run</button>
+          <button id="clear-btn">Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="tabbar" id="tabbar"></div>
+
+    <div id="in-out-container" class="in-out-container">
+      <div class="editor-container" id="editor-container"></div>
+
+      <div class="outer-out-container">
+        <div class="output-toolbar" id="output-toolbar">
+        </div>
+        <div class="inner-out-container" id="inner-out-container">
+
+          <canvas id="canvas-output" width="600" height="600"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="console" id="output-console">console output</div>
+  </div>
+  <canvas id="canvas-hidden" width="16" height="16" style="display: none;"></canvas>
+
+  <script type="module" src="src/ts/app.js"></script>
+  <!-- External JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+</body>
+
+</html>
