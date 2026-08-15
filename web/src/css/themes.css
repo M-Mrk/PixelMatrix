@@ -1,9 +1,11 @@
 [data-theme="dark"] {
-  --bg-0: #121212;
-  --bg-1: #404040;
-  --bg-2: #707070;
-  --bg-3: #909090;
+  --bg-0: #343434;
+  --bg-1: color-mix(in oklch, var(--bg-0) 90%, white);
+  --bg-2: color-mix(in oklch, var(--bg-0) 80%, white);
+  --bg-3: color-mix(in oklch, var(--bg-0) 70%, white);
 
-  --font: os;
-  --font-color: #ffffff;
+  --input: #71f2cf;
+  --input-hover: color-mix(in oklch, var(--input) 70%, black);
+
+  --text: white;
 }

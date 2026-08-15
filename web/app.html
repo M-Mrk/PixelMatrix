@@ -15,19 +15,21 @@
         PixelMatrix
       </div>
       <div class="top-interactives">
-        <div id="top-settings">
+        <div id="top-settings" class="input-group">
           <select id="setting-language">
             <option value="rhai">Rhai</option>
           </select>
           <select id="setting-output-type">
             <option value="grid">Grid</option>
           </select>
-          <input type="checkbox" name="hot-reload" id="setting-hot-reload">
-          <label for="setting-hot-reload">Hot reload</label>
+          <label class="checkbox">
+            <input type="checkbox" name="hot-reload" id="setting-hot-reload">
+            <span>Hot reload</span>
+          </label>
         </div>
-        <div id="top-tools">
-          <button id="run-btn">Run</button>
-          <button id="clear-btn">Clear</button>
+        <div id="top-tools" class="input-group">
+          <button id="run-btn" class="btn">Run</button>
+          <button id="clear-btn" class="btn">Clear</button>
         </div>
       </div>
     </div>

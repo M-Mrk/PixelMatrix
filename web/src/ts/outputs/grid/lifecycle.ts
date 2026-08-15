@@ -53,9 +53,10 @@ export const init = () => {
       <input type="number" name="Resolution height" value="${settings.res_y}" min="1" step="1" id="setting-grid-res-y">
     </div>
     <div>
-    <input type="checkbox" name="Auto clamp output" id="setting-grid-clamp">
-    <label for="setting-grid-clamp">Auto clamp output</label>
-    </div>
+    <label class="checkbox">
+      <input type="checkbox" name="Auto clamp output" id="setting-grid-clamp">
+      <span>Auto clamp output</span>
+    </label>
     `
 
   if (!settings_container) {

@@ -2,7 +2,7 @@ body {
   margin: 0;
 
   background: var(--bg);
-  color: var(--font-color);
+  color: var(--text);
 
   font-family: var(--font);
 
@@ -13,8 +13,8 @@ body {
 
 .workspace {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-template-rows: 0.1fr 1fr 0.4fr;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.5fr 8fr 2fr;
   gap: 0px;
 
   width: 100vw;
@@ -39,14 +39,17 @@ body {
 }
 
 .top-interactives {
+  align-items: center;
   display: flex;
   flex-direction: row;
   gap: 200px;
 }
 
-.top-tools {
+.input-group {
   display: flex;
   flex-direction: row-reverse;
+  align-items: center;
+  gap: var(--space-sm);
 }
 
 .in-out-container {

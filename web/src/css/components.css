@@ -1,32 +1,56 @@
-.btn {
-  padding: 0.8rem;
-  background: var(--accent);
-  border-radius: var(--radius-sm);
+button {
+  appearance: none;
   border: none;
+
+  color: var(--input);
+  background-color: inherit;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+button::before {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-md);
+  content: "\00A0\00A0";
+}
+
+button:hover {
+  background-color: var(--input-hover);
+}
+
+button:hover::before {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-md);
+  content: "> ";
+}
+
+.checkbox {
+  margin-left: var(--space-sm);
+  user-select: none;
+  color: var(--input);
+  transition: background-color var(--transition-fast);
   cursor: pointer;
 }
 
-.btn-danger {
-  background: var(--danger) !important;
+.checkbox:hover {
+  background-color: var(--input-hover);
 }
 
-.seperator {
-  background: var(--border);
-  margin-left: var(--space-xs);
-  margin-right: var(--space-xs);
-  border-radius: var(--radius-lg);
+input[type="checkbox"] {
+  appearance: none;
+  margin: 0;
+
+  font-family: var(--font-mono);
+  font-size: var(--font-size-md);
+  color: var(--input);
 }
 
-canvas {
-  background: white;
+input[type="checkbox"]::before {
+  content: "[ ]";
 }
 
-.notification {
-  display: flex;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  color: var(--danger);
+input[type="checkbox"]:checked::before {
+  content: "[*]";
 }
 
 .spinner {

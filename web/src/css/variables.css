@@ -12,12 +12,13 @@
 
   /* Text */
   --font: system-ui, sans-serif;
+  --font-mono: monospace;
 
   --font-size-sm: 0.8rem;
   --font-size-md: 1rem;
   --font-size-lg: 1.25rem;
 
   /* Animation */
-  --transistion-fast: 100ms ease;
+  --transition-fast: 100ms ease;
   --transition-normal: 200ms ease;
 }
