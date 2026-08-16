@@ -1,7 +1,11 @@
+/* INFO: Button */
 button {
   appearance: none;
   border: none;
 
+  padding-right: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-input);
   color: var(--input);
   background-color: inherit;
   cursor: pointer;
@@ -9,9 +13,8 @@ button {
 }
 
 button::before {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-md);
   content: "\00A0\00A0";
+  /* Placeholder space */
 }
 
 button:hover {
@@ -19,14 +22,16 @@ button:hover {
 }
 
 button:hover::before {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-md);
   content: "> ";
 }
 
+/* INFO: Checkbox */
 .checkbox {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-input);
   margin-left: var(--space-sm);
   user-select: none;
+  padding-right: var(--space-xs);
   color: var(--input);
   transition: background-color var(--transition-fast);
   cursor: pointer;
@@ -39,9 +44,9 @@ button:hover::before {
 input[type="checkbox"] {
   appearance: none;
   margin: 0;
-
   font-family: var(--font-mono);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-input);
+  cursor: pointer;
   color: var(--input);
 }
 
@@ -53,20 +58,82 @@ input[type="checkbox"]:checked::before {
   content: "[*]";
 }
 
-.spinner {
-  border-top: 4px solid var(--border);
-  border-radius: 100%;
-  width: 30px;
-  height: 30px;
-  animation: spin 2s linear infinite;
+/* INFO: Select */
+.tui-select {
+  position: relative;
+  background-color: var(--bg-color, transparent);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-input);
+  color: var(--input);
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
+.tui-select-trigger {
+  cursor: pointer;
+  padding-right: var(--space-xs);
+  padding-left: var(--space-xs);
+  transition: background-color var(--transition-fast);
+}
 
-  100% {
-    transform: rotate(360deg);
-  }
+.tui-select-trigger:hover {
+  background-color: var(--input-hover);
+}
+
+.tui-select-trigger::after {
+  margin-left: var(--space-sm);
+  content: "\2304";
+  /* Unicode for arrow head downwards */
+  position: relative;
+  top: -0.2rem;
+  /* Align arrow head in the middle */
+}
+
+.tui-select-dropdown {
+  display: none;
+  background-color: inherit;
+  position: absolute;
+  z-index: 10;
+
+  top: calc(var(--space-md)+12px);
+  padding: var(--space-md);
+  outline-offset: calc(var(--space-md)/2*-1);
+  outline: 2px dotted var(--input-hover);
+  transition: outline var(--transition-fast);
+}
+
+.tui-select-dropdown:hover {
+  outline: 2px solid var(--input);
+}
+
+.tui-select-dropdown.open {
+  display: block;
+}
+
+.tui-select-option {
+  display: inline;
+  white-space: nowrap;
+  padding-right: var(--space-xs);
+  padding-left: var(--space-xs);
+  transition: background-color var(--transition-fast);
+  cursor: pointer;
+}
+
+.tui-select-option::before {
+  content: "\00A0\00A0\00A0";
+  /* Placeholder space */
+}
+
+.tui-select-option:hover {
+  background-color: var(--input-hover);
+}
+
+.tui-select-option:hover::before {
+  content: ">\00A0\00A0";
+}
+
+.tui-select-option.selected::before {
+  content: "\00A0* ";
+}
+
+.tui-select-option.selected:hover::before {
+  content: ">* ";
 }

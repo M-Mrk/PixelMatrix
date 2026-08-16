@@ -16,12 +16,18 @@
       </div>
       <div class="top-interactives">
         <div id="top-settings" class="input-group">
-          <select id="setting-language">
-            <option value="rhai">Rhai</option>
-          </select>
-          <select id="setting-output-type">
-            <option value="grid">Grid</option>
-          </select>
+          <div id="setting-language" class="tui-select" data-selected="rhai">
+            <div class="tui-select-trigger">Language</div>
+            <div class="tui-select-dropdown" id="setting-languagee">
+              <div class="tui-select-option selected" data-value="rhai">Rhai</div>
+            </div>
+          </div>
+          <div id="setting-output-type" class="tui-select" data-selected="grid">
+            <div class="tui-select-trigger">Output</div>
+            <div class="tui-select-dropdown" id="setting-languagee">
+              <div class="tui-select-option selected" data-value="grid">Grid</div>
+            </div>
+          </div>
           <label class="checkbox">
             <input type="checkbox" name="hot-reload" id="setting-hot-reload">
             <span>Hot reload</span>

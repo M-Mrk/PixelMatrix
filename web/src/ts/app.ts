@@ -4,8 +4,10 @@ import { init_state } from "./state";
 import { init_editor } from "./editor";
 import { init_controls } from "./interaction";
 import { init_settings } from "./settings";
+import { init_ui } from "./ui";
 
 document.addEventListener('DOMContentLoaded', async () => {
+  init_ui();
   init_state();
   init_editor();
   init_workers();

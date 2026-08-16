@@ -1,16 +1,15 @@
 import { get_element } from "./common";
 import { get_state, update_state } from "./state";
 import { AppState, Language, OutputType } from "./types";
+import { get_select_value, set_select_value } from "./ui";
 
 const main_container = get_element<HTMLDivElement>('#top-settings');
-const language_select = get_element<HTMLSelectElement>('#setting-language');
-const output_select = get_element<HTMLSelectElement>('#setting-output-type');
 const hot_reload_check = get_element<HTMLInputElement>('#setting-hot-reload');
 
 export const init_settings = () => {
   const state = get_state();
-  language_select.value = state.language;
-  output_select.value = state.output_type;
+  set_select_value('#setting-language', state.language);
+  set_select_value('#setting-output-type', state.output_type);
 
   hot_reload_check.checked = state.hot_reload;
 
@@ -20,8 +19,8 @@ export const init_settings = () => {
 const load_from_page = () => {
   console.log("Settings change detected");
   let state = get_state();
-  state.language = language_select.value as Language;
-  state.output_type = output_select.value as OutputType;
+  state.language = get_select_value('#setting-language') as Language;
+  state.output_type = get_select_value('#setting-output-type') as OutputType;
   state.hot_reload = hot_reload_check.checked;
 
   update_state(state);

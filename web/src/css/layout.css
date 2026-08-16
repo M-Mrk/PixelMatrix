@@ -35,19 +35,21 @@ body {
 
   padding-left: 12px;
   padding-right: 12px;
-
+  --bg-color: var(--bg-0);
 }
 
 .top-interactives {
-  align-items: center;
   display: flex;
   flex-direction: row;
-  gap: 200px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-lg);
 }
 
 .input-group {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
+  justify-content: flex-end;
   align-items: center;
   gap: var(--space-sm);
 }
