@@ -27,9 +27,11 @@ export const debounce = (fn: Function, delay: number) => {
 }
 
 export const html = (strings: TemplateStringsArray, ...values: any[]) => {
-  return strings.reduce((result, string, i) => {
-    return result + string + (values[i] || '');
-  }, '');
+  return strings
+    .reduce((result, string, i) => {
+      return result + string + (values[i] || '');
+    }, '')
+    .replace(/\s*\n\s*/g, '');
 };
 
 export const get_element = <T extends HTMLElement = HTMLElement>(query: string): T => {

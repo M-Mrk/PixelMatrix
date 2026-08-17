@@ -1,3 +1,9 @@
+.input-wrapper {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-input);
+  color: var(--input);
+}
+
 /* INFO: Button */
 button {
   appearance: none;
@@ -29,7 +35,7 @@ button:hover::before {
 .checkbox {
   font-family: var(--font-mono);
   font-size: var(--font-size-input);
-  margin-left: var(--space-sm);
+  margin-left: var(--space-xs);
   user-select: none;
   padding-right: var(--space-xs);
   color: var(--input);
@@ -56,6 +62,75 @@ input[type="checkbox"]::before {
 
 input[type="checkbox"]:checked::before {
   content: "[*]";
+}
+
+/* INFO: number input */
+.number {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-input);
+  margin-left: var(--space-xs);
+  margin-right: var(--space-xs);
+  cursor: text;
+  user-select: none;
+  color: var(--input);
+  transition: background-color var(--transition-fast);
+  transition: border var(--transition-fast);
+
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.number:hover {
+  background-color: var(--input-hover);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  appearance: textfield;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  margin: 0;
+  width: 3ch;
+  height: auto;
+  user-select: none;
+
+  font-family: var(--font-mono);
+  font-size: var(--font-size-input);
+  cursor: text;
+  color: var(--input);
+  text-align: right;
+}
+
+input[type="number"]:focus {
+  animation: underscore-blink 1s linear infinite;
+  animation-timing-function: steps(1);
+}
+
+@keyframes underscore-blink {
+
+  0%,
+  100% {
+    box-shadow: none;
+  }
+
+  50% {
+    box-shadow: 0 2px 0 0 var(--input);
+  }
+}
+
+
+.number::before {
+  content: '[';
+}
+
+.number::after {
+  content: ']';
 }
 
 /* INFO: Select */

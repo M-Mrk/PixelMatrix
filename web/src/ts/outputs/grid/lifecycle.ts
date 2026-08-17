@@ -46,13 +46,16 @@ export const init = () => {
   }
 
   const settings_html = html`
-    <div>
-      Resolution
-      <input type="number" name="Resolution width" value="${settings.res_x}" min="1" step="1" id="setting-grid-res-x">
-      x
+    <label class="input-wrapper">
+      Resolution:
+      <label class="number"> 
+        <input type="number" name="Resolution width" value="${settings.res_x}" min="1" step="1" id="setting-grid-res-x">
+      </label>
+        x
+      <label class="number">
       <input type="number" name="Resolution height" value="${settings.res_y}" min="1" step="1" id="setting-grid-res-y">
-    </div>
-    <div>
+      </label>
+    </label>
     <label class="checkbox">
       <input type="checkbox" name="Auto clamp output" id="setting-grid-clamp">
       <span>Auto clamp output</span>
