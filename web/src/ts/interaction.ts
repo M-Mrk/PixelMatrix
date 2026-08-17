@@ -1,8 +1,9 @@
-import { get_element, spinner_html } from "./common";
+import { get_element } from "./common";
 import { clear_all_canvas } from "./canvas";
 import { get_editor } from "./editor";
 import { get_output } from "./state";
 import { ScriptError } from "./types";
+import { run } from "./outputs/grid/run";
 
 const run_button = get_element<HTMLButtonElement>('#run-btn');
 const clear_button = get_element<HTMLButtonElement>('#clear-btn');
@@ -20,8 +21,8 @@ export const init_controls = () => {
 
 export const run_pipeline = async () => {
   notification.innerText = "";
-
-  run_button.innerHTML = spinner_html;
+  run_button.classList.add('loading');
+  run_button.disabled = true;
 
   const script = get_editor().getValue();
   let pipeline = get_output().pipeline;
@@ -36,7 +37,8 @@ export const run_pipeline = async () => {
     }
   }
 
-  run_button.innerText = "Run";
+  run_button.classList.remove('loading');
+  run_button.disabled = false;
 };
 
 const clear = () => {

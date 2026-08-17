@@ -41,7 +41,3 @@ export const get_element = <T extends HTMLElement = HTMLElement>(query: string):
   }
   return element;
 }
-
-export const spinner_html = html`
-<div class="spinner"></div>
-`;

@@ -6,6 +6,7 @@
 
   --input: #71f2cf;
   --input-hover: color-mix(in oklch, var(--input) 70%, black);
+  --input-disabled: color-mix(in oklch, white 50%, black);
 
   --text: white;
 }
