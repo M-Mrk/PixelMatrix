@@ -8,6 +8,7 @@ import { run } from "./outputs/grid/run";
 const run_button = get_element<HTMLButtonElement>('#run-btn');
 const clear_button = get_element<HTMLButtonElement>('#clear-btn');
 const notification = get_element<HTMLDivElement>('#output-console');
+const middle_icon = get_element<HTMLDivElement>('#middle-icon');
 
 export const init_controls = () => {
   run_button.addEventListener('click', () => {
@@ -16,13 +17,25 @@ export const init_controls = () => {
 
   clear_button.addEventListener('click', () => {
     clear();
-  })
+  });
+
+  middle_icon.addEventListener('click', () => {
+    run_pipeline();
+  });
 };
 
+let running = false;
 export const run_pipeline = async () => {
+  if (running) {
+    console.debug("pipeline already running!");
+    return;
+  }
+  running = true;
   notification.innerText = "";
+
   run_button.classList.add('loading');
   run_button.disabled = true;
+  middle_icon.classList.add('loading');
 
   const script = get_editor().getValue();
   let pipeline = get_output().pipeline;
@@ -39,6 +52,8 @@ export const run_pipeline = async () => {
 
   run_button.classList.remove('loading');
   run_button.disabled = false;
+  middle_icon.classList.remove('loading');
+  running = false;
 };
 
 const clear = () => {

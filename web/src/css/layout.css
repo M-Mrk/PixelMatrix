@@ -55,6 +55,7 @@ body {
 }
 
 .in-out-container {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
@@ -63,7 +64,12 @@ body {
   background-color: var(--bg-1);
 }
 
+.editor-container {
+  grid-column: 1;
+}
+
 .outer-out-container {
+  grid-column: 2;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 0.1fr 1fr;
