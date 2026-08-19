@@ -1,3 +1,5 @@
+import '@fontsource-variable/jetbrains-mono';
+
 import wasm_init from "../../pkg/wasm/core_engine";
 import { init_workers } from "./worker/executor"
 import { init_state } from "./state";

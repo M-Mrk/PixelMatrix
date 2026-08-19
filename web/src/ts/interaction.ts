@@ -3,11 +3,10 @@ import { clear_all_canvas } from "./canvas";
 import { get_editor } from "./editor";
 import { get_output } from "./state";
 import { ScriptError } from "./types";
-import { run } from "./outputs/grid/run";
+import { show_error } from "./ui";
 
 const run_button = get_element<HTMLButtonElement>('#run-btn');
 const clear_button = get_element<HTMLButtonElement>('#clear-btn');
-const notification = get_element<HTMLDivElement>('#output-console');
 const middle_icon = get_element<HTMLDivElement>('#middle-icon');
 
 export const init_controls = () => {
@@ -31,7 +30,6 @@ export const run_pipeline = async () => {
     return;
   }
   running = true;
-  notification.innerText = "";
 
   run_button.classList.add('loading');
   run_button.disabled = true;
@@ -44,9 +42,9 @@ export const run_pipeline = async () => {
   if (result) {
     if (result instanceof ScriptError) {
       console.error("Running script failed: " + result.text);
-      notification.innerText = result.text;
+      show_error(result.text);
     } else {
-      notification.innerText = "Pipeline error!"
+      show_error("Pipeline error!");
     }
   }
 
@@ -58,5 +56,4 @@ export const run_pipeline = async () => {
 
 const clear = () => {
   clear_all_canvas();
-  notification.innerText = "";
 }

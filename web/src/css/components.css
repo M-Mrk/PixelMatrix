@@ -297,3 +297,41 @@ input[type="number"]:focus {
 #middle-icon:hover {
   background-color: var(--input-hover);
 }
+
+/* INFO: error pop up */
+@keyframes error-outline-blink {
+
+  0%,
+  100% {
+    outline-color: var(--error-border);
+  }
+
+  50% {
+    outline-color: var(--error);
+  }
+}
+
+.error-pop {
+  display: none;
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background-color: var(--bg-0);
+  padding: var(--space-md);
+  outline: 3px dashed var(--error-border);
+  outline-offset: calc(var(--space-md)/2*-1);
+  animation: error-outline-blink 1s step-start infinite;
+  color: var(--error);
+  transition: background var(--transition-fast);
+}
+
+.error-pop.shown {
+  display: block;
+}
+
+.error-pop:hover {
+  background-color: var(--error-hover);
+}

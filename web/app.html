@@ -11,9 +11,7 @@
 <body data-theme="dark">
   <div id="workspace" class="workspace" data-focused="code">
     <div id="topbar" class="topbar">
-      <div>
-        PixelMatrix
-      </div>
+      <div>PixelMatrix</div>
       <div class="top-interactives">
         <div id="top-settings" class="input-group">
           <div id="setting-language" class="tui-select" data-selected="rhai">
@@ -56,7 +54,11 @@
       <div id="middle-icon"></div>
     </div>
 
-    <div class="console" id="output-console">console output</div>
+    <div class="console-container">
+      <div class="console-header">Console</div>
+      <div id="console"></div>
+      <div class="error-pop" id="error-popup"></div>
+    </div>
   </div>
   <canvas id="canvas-hidden" width="16" height="16" style="display: none;"></canvas>
 

@@ -11,8 +11,8 @@
   --radius-lg: 12px;
 
   /* Text */
-  --font: system-ui, sans-serif;
-  --font-mono: monospace;
+  --font: 'JetBrains Mono Variable', monospace;
+  --font-mono: 'JetBrains Mono Variable', monospace;
 
   --font-size-input: 0.9rem;
   --font-size-sm: 0.8rem;

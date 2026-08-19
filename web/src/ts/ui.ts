@@ -73,6 +73,23 @@ export const set_select_value = (id: string, value: string) => {
   selected_opt.classList.add("selected");
 }
 
+const init_error = () => {
+  const error = get_element<HTMLDivElement>('#error-popup');
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (target instanceof Node && !error.contains(event.target as Node)) {
+      error?.classList.remove('shown');
+    }
+  });
+}
+
+export const show_error = (msg: string) => {
+  const error = get_element<HTMLDivElement>('#error-popup');
+  error.innerText = msg;
+  error.classList.add('shown');
+}
+
 export const init_ui = () => {
   init_selects();
+  init_error();
 };
