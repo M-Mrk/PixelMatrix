@@ -95,6 +95,7 @@ dependencies = [
  "serde-wasm-bindgen",
  "tsify",
  "wasm-bindgen",
+ "web-time",
 ]
 
 [[package]]

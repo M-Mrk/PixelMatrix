@@ -24,14 +24,25 @@ pub fn run_grid(
 
     let num_pixels = settings.res_x * settings.res_y;
     let mut buf: Vec<Pixel> = Vec::with_capacity(num_pixels as usize);
-    let script_handler = get_script_handler(script_type);
+    let script_handler = rhai_handler::run_rhai;
+    let script_engine = rhai_handler::create_engine();
 
+    // let mut start = web_time::Instant::now();
     for y in 0..settings.res_y {
         for x in 0..settings.res_x {
-            let result = script_handler(&script, x, y, &settings, &mut buf);
+            let result = script_handler(&script, x, y, &settings, &script_engine, &mut buf);
             if let Err(e) = result {
                 return Err(ErrorOutput::new(e, None));
             }
+
+            // Profile time per pixel
+            // if x == settings.res_x - 1 {
+            //     let elapsed = start.elapsed();
+            //     let elapsed_ms = elapsed.as_secs_f64() * 1000.0;
+            //     let ms_per_pixel = elapsed_ms / settings.res_x as f64;
+            //     trace!("Time per pixel: {:.3} ms", ms_per_pixel);
+            //     start = web_time::Instant::now();
+            // }
         }
     }
 
@@ -40,12 +51,4 @@ pub fn run_grid(
         .flat_map(|pixel| [pixel.r, pixel.g, pixel.b, 255])
         .collect();
     Ok(Clamped(rgba))
-}
-
-fn get_script_handler(
-    script_type: ScriptType,
-) -> fn(&str, i32, i32, &GridSettings, &mut Vec<Pixel>) -> Result<(), String> {
-    match script_type {
-        ScriptType::Rhai => rhai_handler::run_rhai,
-    }
 }

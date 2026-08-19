@@ -3,16 +3,20 @@ use rhai::{Engine, Scope};
 use super::common::rand;
 use crate::types::{GridSettings, Pixel};
 
+pub fn create_engine() -> Engine {
+    let mut engine = Engine::new();
+    engine.register_fn("rand", rand);
+    engine
+}
+
 pub fn run_rhai(
     script: &str,
     x: i32,
     y: i32,
     settings: &GridSettings,
+    engine: &Engine,
     buf: &mut Vec<Pixel>,
 ) -> Result<(), String> {
-    let mut engine = Engine::new();
-    engine.register_fn("rand", rand);
-
     let mut scope = Scope::new();
     scope.push_constant("x", x as i64);
     scope.push_constant("y", y as i64);
