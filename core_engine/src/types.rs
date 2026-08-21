@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
@@ -6,23 +6,6 @@ use wasm_bindgen::prelude::*;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ScriptType {
     Rhai,
-}
-
-#[wasm_bindgen]
-#[derive(Debug, Clone, Copy)]
-pub struct Pixel {
-    pub r: u8,
-    pub g: u8,
-    pub b: u8,
-}
-impl Pixel {
-    pub fn from_tuple(rgb: (u8, u8, u8)) -> Self {
-        Self {
-            r: rgb.0,
-            g: rgb.1,
-            b: rgb.2,
-        }
-    }
 }
 
 #[wasm_bindgen]
@@ -53,14 +36,6 @@ impl ErrorOutput {
     pub fn position(&self) -> Option<Position> {
         self.position.clone()
     }
-}
-
-#[derive(Serialize, Deserialize, Tsify)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct GridSettings {
-    pub res_x: i32,
-    pub res_y: i32,
-    pub clamp: bool,
 }
 
 #[derive(Serialize, Tsify)]

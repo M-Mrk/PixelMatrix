@@ -1,7 +1,7 @@
 use rhai::{Engine, Scope};
 
-use super::common::rand;
-use crate::types::{GridSettings, Pixel};
+use super::types::{GridSettings, Pixel};
+use crate::outputs::common::rand;
 
 pub fn create_engine() -> Engine {
     let mut engine = Engine::new();
