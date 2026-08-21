@@ -62,3 +62,10 @@ pub struct GridSettings {
     pub res_y: i32,
     pub clamp: bool,
 }
+
+#[derive(Serialize, Tsify)]
+#[tsify(into_wasm_abi)]
+pub struct LogMessage {
+    pub system: String,
+    pub log: String,
+}

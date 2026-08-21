@@ -1,4 +1,5 @@
 import { get_element } from "./common";
+import { init_console } from "./console";
 
 const init_selects = () => {
   document.querySelectorAll(".tui-select").forEach(select => {
@@ -92,4 +93,5 @@ export const show_error = (msg: string) => {
 export const init_ui = () => {
   init_selects();
   init_error();
+  init_console();
 };

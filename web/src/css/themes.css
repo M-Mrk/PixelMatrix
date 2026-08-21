@@ -13,4 +13,6 @@
   --error-border: color-mix(in oklch, var(--error) 90%, black);
 
   --text: white;
+  --log-system: gray;
+  --log-user: white;
 }
