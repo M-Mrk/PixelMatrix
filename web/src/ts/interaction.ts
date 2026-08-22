@@ -2,7 +2,6 @@ import { get_element } from "./common";
 import { clear_all_canvas } from "./canvas";
 import { get_editor } from "./editor";
 import { get_output } from "./state";
-import { ScriptError } from "./types";
 import { show_error } from "./ui";
 
 const run_button = get_element<HTMLButtonElement>('#run-btn');
@@ -40,12 +39,8 @@ export const run_pipeline = async () => {
 
   const result = await pipeline(script);
   if (result) {
-    if (result instanceof ScriptError) {
-      console.error("Running script failed: " + result.text);
-      show_error(result.text);
-    } else {
-      show_error("Pipeline error!");
-    }
+    console.error("Running script failed: " + result.text);
+    show_error(result.text);
   }
 
   run_button.classList.remove('loading');

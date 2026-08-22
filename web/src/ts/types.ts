@@ -1,4 +1,4 @@
-import { ErrorOutput, GridSettings } from "../../pkg/wasm/core_engine";
+import { ErrorOutput, GridSettings, LogMessage, Position } from "../../pkg/wasm/core_engine";
 
 export interface AppState {
   output_type: OutputType,
@@ -22,13 +22,43 @@ export interface Output {
   deinit(): void,
 };
 
-export interface WorkerMessage {
+export type OutputSetting = GridSettings; // Add new settings here
+export type OutputOutputs = Uint8ClampedArray; // Add new outputs here
+
+export interface WorkerRequest {
   script: string,
   state: AppState,
-  config: GridSettings, // Add new settings here
+  config: OutputSetting,
+  id?: string,
 };
 
-export class ScriptError {
-  text?: string;
-  position?: [number, number] | null; // line, char
+export const WorkerStatus = {
+  SUCCESS: 'success',
+  ERROR: 'error',
+  FAILURE: 'failure',
+} as const;
+export type WorkerStatus = typeof WorkerStatus[keyof typeof WorkerStatus];
+
+interface WorkerSuccess {
+  status: typeof WorkerStatus.SUCCESS,
+  data: OutputOutputs,
+  logs: LogMessage[],
+  id: string,
 }
+
+// Used for user errors, like bad syntax in script
+interface WorkerError {
+  status: typeof WorkerStatus.ERROR,
+  error: ErrorOutput,
+  logs: LogMessage[],
+  id: string,
+}
+
+// Used for unexpected errors
+interface WorkerFailure {
+  status: typeof WorkerStatus.FAILURE,
+  error: string,
+  id: string,
+}
+
+export type WorkerResponse = WorkerSuccess | WorkerError | WorkerFailure;

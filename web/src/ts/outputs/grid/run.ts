@@ -1,24 +1,34 @@
 import { settings } from "./lifecycle";
 import { full_draw } from "./draw";
 import { execute } from "../../worker/executor";
-import { WorkerMessage } from "../../types";
 import { get_state } from "../../state";
+import { WorkerRequest } from "../../types";
+import { ErrorOutput } from "../../../../pkg/wasm/core_engine";
 
-export const run = async (script: string): Promise<any | null> => {
-  let pixels;
+export const run = async (script: string): Promise<ErrorOutput | null> => {
+  console.log("here");
+  let output;
   console.time("interpreting rhai script");
   try {
-    const msg: WorkerMessage = {
+    const msg: WorkerRequest = {
       script: script,
       state: get_state(),
       config: settings,
     }
-    pixels = await execute(msg);
+    output = await execute(msg);
+
   } catch (error) {
-    console.timeEnd("interpreting rhai script")
-    return error;
+    if (error && typeof error === "object" && "text" in error && "position" in error) {
+      return error as ErrorOutput;
+    }
+    console.timeEnd("interpreting rhai script");
+    const unexpected_err: ErrorOutput = {
+      text: String(error),
+      position: undefined,
+    }
+    return unexpected_err;
   }
   console.timeEnd("interpreting rhai script");
-  full_draw(pixels, settings.res_x, settings.res_y);
+  full_draw(output, settings.res_x, settings.res_y);
   return null;
 };

@@ -1,7 +1,14 @@
 use rhai::{Engine, Scope};
 
 use super::types::{GridSettings, Pixel};
-use crate::outputs::common::rand;
+use crate::{outputs::common::rand, types::LogMessage};
+
+fn create_log(x: i32, y: i32, user_msg: &str) -> LogMessage {
+    LogMessage {
+        system: format!("[x:{}|y:{}] =>", x, y),
+        log: (user_msg.to_string()),
+    }
+}
 
 pub fn create_engine() -> Engine {
     let mut engine = Engine::new();

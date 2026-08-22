@@ -1,8 +1,8 @@
 use super::rhai_handler;
 use super::types::{GridSettings, Pixel};
 use crate::outputs::common::init_logging;
+use crate::outputs::grid::types::GridSuccessReturn;
 use crate::types::{ErrorOutput, ScriptType};
-use wasm_bindgen::Clamped;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -10,7 +10,7 @@ pub fn run_grid(
     script: String,
     script_type: ScriptType,
     settings: GridSettings,
-) -> Result<Clamped<Vec<u8>>, ErrorOutput> {
+) -> Result<GridSuccessReturn, ErrorOutput> {
     init_logging();
     let num_pixels = settings.res_x * settings.res_y;
     let mut buf: Vec<Pixel> = Vec::with_capacity(num_pixels as usize);
@@ -40,5 +40,6 @@ pub fn run_grid(
         .iter()
         .flat_map(|pixel| [pixel.r, pixel.g, pixel.b, 255])
         .collect();
-    Ok(Clamped(rgba))
+    let success_output = GridSuccessReturn::new(rgba, Vec::new());
+    Ok(success_output)
 }

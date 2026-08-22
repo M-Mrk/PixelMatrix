@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
-use wasm_bindgen::prelude::*;
+use wasm_bindgen::{Clamped, prelude::*};
+
+use crate::types::LogMessage;
 
 #[wasm_bindgen]
 #[derive(Debug, Clone, Copy)]
@@ -25,4 +27,30 @@ pub struct GridSettings {
     pub res_x: i32,
     pub res_y: i32,
     pub clamp: bool,
+}
+
+#[wasm_bindgen]
+#[derive(Clone)]
+pub struct GridSuccessReturn {
+    pixels: Vec<u8>,
+    logs: Vec<LogMessage>,
+}
+
+impl GridSuccessReturn {
+    pub fn new(pixels: Vec<u8>, logs: Vec<LogMessage>) -> Self {
+        Self { pixels, logs }
+    }
+}
+
+#[wasm_bindgen]
+impl GridSuccessReturn {
+    #[wasm_bindgen(getter)]
+    pub fn pixels(&self) -> Clamped<Vec<u8>> {
+        Clamped(self.pixels.clone())
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn logs(&self) -> Vec<LogMessage> {
+        self.logs.clone()
+    }
 }

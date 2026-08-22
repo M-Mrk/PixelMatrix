@@ -8,37 +8,26 @@ pub enum ScriptType {
     Rhai,
 }
 
-#[wasm_bindgen]
-#[derive(Debug, Clone, Copy)]
+#[derive(Serialize, Tsify, Clone)]
+#[tsify(into_wasm_abi)]
 pub struct Position {
     pub line: i32,
     pub char: i32,
 }
 
-#[wasm_bindgen]
-#[derive(Debug, Clone)]
+#[derive(Serialize, Tsify, Clone)]
+#[tsify(into_wasm_abi)]
 pub struct ErrorOutput {
-    text: String,
-    position: Option<Position>,
+    pub text: String,
+    pub position: Option<Position>,
 }
-#[wasm_bindgen]
 impl ErrorOutput {
     pub fn new(text: String, position: Option<Position>) -> Self {
         Self { text, position }
     }
-
-    #[wasm_bindgen(getter)]
-    pub fn text(&self) -> String {
-        self.text.clone()
-    }
-
-    #[wasm_bindgen(getter)]
-    pub fn position(&self) -> Option<Position> {
-        self.position.clone()
-    }
 }
 
-#[derive(Serialize, Tsify)]
+#[derive(Serialize, Tsify, Clone)]
 #[tsify(into_wasm_abi)]
 pub struct LogMessage {
     pub system: String,

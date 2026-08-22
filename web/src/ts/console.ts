@@ -89,7 +89,6 @@ const render_logs = () => {
   for (let i = 0; i < max; i++) {
     const log_i = i + index;
     if (log_i >= num_logs) {
-      console.debug(`log_i: ${log_i}`);
       return;
     }
     show_log(log_messages[log_i] as LogMessage);
