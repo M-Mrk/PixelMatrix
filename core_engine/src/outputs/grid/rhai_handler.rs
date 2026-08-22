@@ -1,7 +1,11 @@
 use rhai::{Engine, Scope};
 
 use super::types::{GridSettings, Pixel};
-use crate::{outputs::common::rand, types::LogMessage};
+use crate::types::Position as CPosition;
+use crate::{
+    outputs::common::rand,
+    types::{ErrorOutput, LogMessage},
+};
 
 fn create_log(x: i32, y: i32, user_msg: &str) -> LogMessage {
     LogMessage {
@@ -23,7 +27,7 @@ pub fn run_rhai(
     settings: &GridSettings,
     engine: &Engine,
     buf: &mut Vec<Pixel>,
-) -> Result<(), String> {
+) -> Result<(), ErrorOutput> {
     let mut scope = Scope::new();
     scope.push_constant("x", x as i64);
     scope.push_constant("y", y as i64);
@@ -32,21 +36,30 @@ pub fn run_rhai(
     if let Err(err) = script_return {
         match *err {
             rhai::EvalAltResult::ErrorMismatchOutputType(req_type, actual_type, pos) => {
-                return Err(format!(
-                    "Unexpected return at {}! Return is of type '{}' and not the expected '{}'! Example return: [255, 125, 50] in the order of RGB.",
-                    pos, actual_type, req_type,
+                return Err(ErrorOutput::new(
+                    format!(
+                        "Unexpected return at {}! Return is of type '{}' and not the expected '{}'! Example return: [255, 125, 50] in the order of RGB.",
+                        pos, actual_type, req_type,
+                    ),
+                    Some(CPosition::from_rhai(pos)),
                 ));
             }
             _ => {
-                return Err(format!("Bad script! Error: {}", *err));
+                return Err(ErrorOutput::new(
+                    format!("Bad script! Error: {}", *err),
+                    None,
+                ));
             }
         }
     }
     let raw_script_color = script_return.unwrap();
     if raw_script_color.len() > 3 {
-        return Err(format!(
-            "Bad return! '{:?}' is too long. Make sure to return an array of 3 u8's. Example return: [255, 125, 50] in the order of RGB.",
-            raw_script_color
+        return Err(ErrorOutput::new(
+            format!(
+                "Bad return! '{:?}' is too long. Make sure to return an array of 3 u8's. Example return: [255, 125, 50] in the order of RGB.",
+                raw_script_color
+            ),
+            None,
         ));
     }
 
@@ -55,18 +68,24 @@ pub fn run_rhai(
         if let Some(int_val) = val.clone().try_cast::<i64>() {
             script_color.push(int_val);
         } else {
-            return Err(format!(
-                "Bad return! Array elements must all be integers. Bad type was '{}'",
-                val.type_name()
+            return Err(ErrorOutput::new(
+                format!(
+                    "Bad return! Array elements must all be integers. Bad type was '{}'",
+                    val.type_name()
+                ),
+                None,
             ));
         }
     }
 
     if script_color.iter().any(|val| *val > 255_i64) {
         if !settings.clamp {
-            return Err(format!(
-                "Bad return! '{:?}' can not be used as 3 8-bit unsigned integers. Make sure all 3 values are not more than 255.",
-                script_color
+            return Err(ErrorOutput::new(
+                format!(
+                    "Bad return! '{:?}' can not be used as 3 8-bit unsigned integers. Make sure all 3 values are not more than 255.",
+                    script_color
+                ),
+                None,
             ));
         }
         script_color = script_color
@@ -75,7 +94,7 @@ pub fn run_rhai(
                 if *val > 255 {
                     return 255;
                 }
-                return *val;
+                *val
             })
             .collect();
     }

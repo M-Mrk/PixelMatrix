@@ -30,7 +30,7 @@ pub struct GridSettings {
 }
 
 #[wasm_bindgen]
-#[derive(Clone)]
+#[derive(Serialize, Clone)]
 pub struct GridSuccessReturn {
     pixels: Vec<u8>,
     logs: Vec<LogMessage>,

@@ -2,7 +2,7 @@ use super::rhai_handler;
 use super::types::{GridSettings, Pixel};
 use crate::outputs::common::init_logging;
 use crate::outputs::grid::types::GridSuccessReturn;
-use crate::types::{ErrorOutput, ScriptType};
+use crate::types::{ErrorOutput, ScriptType, WasmResponse};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -10,7 +10,7 @@ pub fn run_grid(
     script: String,
     script_type: ScriptType,
     settings: GridSettings,
-) -> Result<GridSuccessReturn, ErrorOutput> {
+) -> WasmResponse<GridSuccessReturn> {
     init_logging();
     let num_pixels = settings.res_x * settings.res_y;
     let mut buf: Vec<Pixel> = Vec::with_capacity(num_pixels as usize);
@@ -21,8 +21,8 @@ pub fn run_grid(
     for y in 0..settings.res_y {
         for x in 0..settings.res_x {
             let result = script_handler(&script, x, y, &settings, &script_engine, &mut buf);
-            if let Err(e) = result {
-                return Err(ErrorOutput::new(e, None));
+            if let Err(err) = result {
+                return WasmResponse::Error(err);
             }
 
             // Profile time per pixel
@@ -41,5 +41,5 @@ pub fn run_grid(
         .flat_map(|pixel| [pixel.r, pixel.g, pixel.b, 255])
         .collect();
     let success_output = GridSuccessReturn::new(rgba, Vec::new());
-    Ok(success_output)
+    WasmResponse::from_result(Ok(success_output))
 }

@@ -1,7 +1,8 @@
 /// <reference lib="webworker" />
 
-import init, { run_grid, ScriptType, ErrorOutput } from "../../../pkg/wasm/core_engine";
-import { WorkerRequest, WorkerResponse, WorkerStatus, OutputType, Language } from "../types";
+import init, { run_grid, ScriptType, ErrorOutput, WasmResponse } from "../../../pkg/wasm/core_engine";
+import { GridSuccessReturn } from "../../../pkg/wasm/core_engine";
+import { WorkerRequest, WorkerResponse, WorkerStatus, OutputType, Language, OutputOutputs } from "../types";
 
 let wasm_loaded = init();
 
@@ -20,43 +21,42 @@ self.onmessage = async (event) => {
   await wasm_loaded;
   const req = event.data as WorkerRequest;
   const lang = convert_language(req.state.language);
-
+  let wasm_err: ErrorOutput;
   try {
     switch (req.state.output_type) {
       case OutputType.GRID:
-        const output = run_grid(req.script, lang, req.config);
-
-        console.log("returning data for grid from engine worker");
-        const response: WorkerResponse = {
-          status: WorkerStatus.SUCCESS,
-          data: output.pixels,
-          logs: output.logs,
-          id: req.id as string,
+        const wasm_response = run_grid(req.script, lang, req.config);
+        if ("Ok" in wasm_response) {
+          const grid_ok: GridSuccessReturn = wasm_response.Ok;
+          const response: WorkerResponse = {
+            status: WorkerStatus.SUCCESS,
+            data: grid_ok.pixels,
+            logs: grid_ok.logs,
+            id: req.id as string,
+          }
+          self.postMessage(response);
+          return;
         }
-        self.postMessage(response, [output.pixels.buffer]);
+        wasm_err = wasm_response.Error
         break
 
       default:
         throw new Error(`Unknown output type: ${req.state.output_type}`);
     }
-  } catch (error) {
-    console.error(`returning error from engine worker`);
-    if (typeof error === 'object' && error != null && 'text' in error) {
-      const response: WorkerResponse = {
-        status: WorkerStatus.ERROR,
-        error: error as ErrorOutput,
-        logs: [],
-        id: req.id as string,
-      }
-      self.postMessage(response);
-    } else {
-      console.error(`WASM returned unknown error: ${error}`);
-      const response: WorkerResponse = {
-        status: WorkerStatus.FAILURE,
-        error: error as string,
-        id: req.id as string,
-      }
-      self.postMessage(response);
+    const response: WorkerResponse = {
+      status: WorkerStatus.ERROR,
+      error: wasm_err,
+      id: req.id as string,
     }
+    self.postMessage(response);
+
+  } catch (error) {
+    console.error(`caught unexpected error from WASM: ${error}`);
+    const response: WorkerResponse = {
+      status: WorkerStatus.FAILURE,
+      error: error as string,
+      id: req.id as string,
+    }
+    self.postMessage(response);
   }
 }

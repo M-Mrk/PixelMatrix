@@ -50,7 +50,6 @@ interface WorkerSuccess {
 interface WorkerError {
   status: typeof WorkerStatus.ERROR,
   error: ErrorOutput,
-  logs: LogMessage[],
   id: string,
 }
 

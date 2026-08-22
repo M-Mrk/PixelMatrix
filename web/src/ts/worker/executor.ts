@@ -26,8 +26,11 @@ export const execute = async (req: WorkerRequest): Promise<OutputOutputs> => {
         resolve(response.data);
       } else if (response.status === WorkerStatus.ERROR) {
         reject(response.error);
-      } else {
+      } else if (response.status === WorkerStatus.FAILURE) {
         reject(response.error);
+      } else {
+        console.error("Encountered unexpected return from engine Web Worker");
+        throw new Error(response);
       }
     };
 
