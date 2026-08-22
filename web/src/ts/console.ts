@@ -118,4 +118,13 @@ export const init_console = () => {
     event.preventDefault();
     scroll.scrollTop = scroll.scrollTop + event.deltaY;
   });
+
+
+  let test_logs: LogMessage[] = [
+    { system: "[x:0|y:0] =>", log: "Hi stardancers!" },
+  ]
+  for (let i = 1; i < 1000; i++) {
+    test_logs.push({ system: `[x:${i}|y:${i}]`, log: "This is another dummy log" });
+  }
+  add_logs(test_logs);
 }
