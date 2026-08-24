@@ -4,6 +4,7 @@ import { execute } from "../../worker/executor";
 import { get_state } from "../../state";
 import { WorkerRequest } from "../../types";
 import { ErrorOutput } from "../../../../pkg/wasm/core_engine";
+import { add_logs } from "../../console";
 
 export const run = async (script: string): Promise<ErrorOutput | null> => {
   let output;

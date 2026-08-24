@@ -17,7 +17,7 @@ const convert_language = (lang: Language): ScriptType => {
 }
 
 self.onmessage = async (event) => {
-  console.log("received message");
+  console.log("wasm web worker received a message");
   await wasm_loaded;
   const req = event.data as WorkerRequest;
   const lang = convert_language(req.state.language);

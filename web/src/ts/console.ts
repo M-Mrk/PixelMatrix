@@ -62,7 +62,6 @@ const max_logs_showable = (): number => {
 const set_spacer = () => {
   const log_h = get_log_height();
   const scroll_h = log_messages.length * log_h + log_h + 'px';
-  console.debug(`Setting spacer to: ${scroll_h}`);
   spacer.style.height = String(scroll_h);
 }
 
@@ -77,7 +76,6 @@ const get_view_index = () => {
 }
 
 const console_size_observer = new ResizeObserver(() => {
-  console.debug("Console was resized!");
   render_logs();
 });
 
@@ -117,13 +115,4 @@ export const init_console = () => {
     event.preventDefault();
     scroll.scrollTop = scroll.scrollTop + event.deltaY;
   });
-
-
-  let test_logs: LogMessage[] = [
-    { system: "[x:0|y:0] =>", log: "Hi stardancers!" },
-  ]
-  for (let i = 1; i < 1000; i++) {
-    test_logs.push({ system: `[x:${i}|y:${i}]`, log: "This is another dummy log" });
-  }
-  add_logs(test_logs);
 }

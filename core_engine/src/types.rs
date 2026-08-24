@@ -55,7 +55,7 @@ impl<T> WasmResponse<T> {
     }
 }
 
-#[derive(Serialize, Tsify, Clone)]
+#[derive(Serialize, Tsify, Clone, Debug)]
 #[tsify(into_wasm_abi)]
 pub struct LogMessage {
     pub system: String,

@@ -3,6 +3,7 @@ import { clear_all_canvas } from "./canvas";
 import { get_editor } from "./editor";
 import { get_output } from "./state";
 import { show_error } from "./ui";
+import { clear_console } from "./console";
 
 const run_button = get_element<HTMLButtonElement>('#run-btn');
 const clear_button = get_element<HTMLButtonElement>('#clear-btn');
@@ -51,4 +52,5 @@ export const run_pipeline = async () => {
 
 const clear = () => {
   clear_all_canvas();
+  clear_console();
 }

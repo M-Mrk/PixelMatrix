@@ -1,4 +1,5 @@
 use rhai::{Engine, Scope};
+use std::sync::{Arc, Mutex};
 
 use super::types::{GridSettings, Pixel};
 use crate::types::Position as CPosition;
@@ -9,7 +10,7 @@ use crate::{
 
 fn create_log(x: i32, y: i32, user_msg: &str) -> LogMessage {
     LogMessage {
-        system: format!("[x:{}|y:{}] =>", x, y),
+        system: format!("[x:{}|y:{}]", x, y),
         log: (user_msg.to_string()),
     }
 }
@@ -20,14 +21,42 @@ pub fn create_engine() -> Engine {
     engine
 }
 
+pub fn clear_engine(eng: &mut Engine) {
+    // Clear hooks so Arc references get removed
+    eng.on_print(|_| {});
+    eng.on_debug(|_, _, _| {});
+}
+
 pub fn run_rhai(
     script: &str,
     x: i32,
     y: i32,
     settings: &GridSettings,
-    engine: &Engine,
-    buf: &mut Vec<Pixel>,
+    engine: &mut Engine,
+    out_buf: &mut Vec<Pixel>,
+    log_buf: Arc<Mutex<Vec<LogMessage>>>,
 ) -> Result<(), ErrorOutput> {
+    let log_fn = move |msg: &str| {
+        let log = create_log(x, y, msg);
+        log_buf.clone().lock().unwrap().push(log);
+    };
+
+    engine.on_print(log_fn.clone());
+    engine.on_debug(move |val, _, pos| {
+        let line = pos.line();
+        let position = pos.position();
+        let pos_string = if let Some(l) = line {
+            if let Some(c) = position {
+                format!(" @ {}:{}", l, c)
+            } else {
+                format!(" @ {}", l)
+            }
+        } else {
+            "".to_string()
+        };
+        log_fn(&format!("{}{}", val, pos_string,));
+    });
+
     let mut scope = Scope::new();
     scope.push_constant("x", x as i64);
     scope.push_constant("y", y as i64);
@@ -104,6 +133,6 @@ pub fn run_rhai(
     color.1 = script_color[1] as u8;
     color.2 = script_color[2] as u8;
 
-    buf.push(Pixel::from_tuple(color));
+    out_buf.push(Pixel::from_tuple(color));
     Ok(())
 }
