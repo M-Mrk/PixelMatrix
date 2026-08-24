@@ -60,6 +60,8 @@ pub fn run_rhai(
     let mut scope = Scope::new();
     scope.push_constant("x", x as i64);
     scope.push_constant("y", y as i64);
+    scope.push_constant("res_x", settings.res_x as i64);
+    scope.push_constant("res_y", settings.res_y as i64);
 
     let script_return = engine.eval_with_scope::<rhai::Array>(&mut scope, script);
     if let Err(err) = script_return {
