@@ -1,4 +1,4 @@
-use rhai::{Engine, Scope};
+use rhai::{AST, Engine, ParseError, Scope};
 use std::sync::{Arc, Mutex};
 
 use super::types::{GridSettings, Pixel};
@@ -27,8 +27,22 @@ pub fn clear_engine(eng: &mut Engine) {
     eng.on_debug(|_, _, _| {});
 }
 
+pub fn compile(script: &str, engine: &Engine) -> Result<AST, ErrorOutput> {
+    let compiled = engine.compile(script);
+    if let Ok(ast) = compiled {
+        return Ok(ast);
+    }
+    let parse_err: ParseError = compiled.unwrap_err();
+
+    Err(ErrorOutput {
+        text: parse_err.to_string(),
+        position: Some(CPosition::from_rhai(parse_err.1)),
+        logs: Vec::new(),
+    })
+}
+
 pub fn run_rhai(
-    script: &str,
+    ast: &AST,
     x: i32,
     y: i32,
     settings: &GridSettings,
@@ -63,7 +77,7 @@ pub fn run_rhai(
     scope.push_constant("res_x", settings.res_x as i64);
     scope.push_constant("res_y", settings.res_y as i64);
 
-    let script_return = engine.eval_with_scope::<rhai::Array>(&mut scope, script);
+    let script_return = engine.eval_ast_with_scope::<rhai::Array>(&mut scope, ast);
     if let Err(err) = script_return {
         match *err {
             rhai::EvalAltResult::ErrorMismatchOutputType(req_type, actual_type, pos) => {
@@ -84,10 +98,10 @@ pub fn run_rhai(
         }
     }
     let raw_script_color = script_return.unwrap();
-    if raw_script_color.len() > 3 {
+    if raw_script_color.len() != 3 {
         return Err(ErrorOutput::new(
             format!(
-                "Bad return! '{:?}' is too long. Make sure to return an array of 3 u8's. Example return: [255, 125, 50] in the order of RGB.",
+                "Bad return! '{:?}' has a wrong amount of elements. Make sure to return an array of 3 u8's. Example return: [255, 125, 50] in the order of RGB.",
                 raw_script_color
             ),
             None,

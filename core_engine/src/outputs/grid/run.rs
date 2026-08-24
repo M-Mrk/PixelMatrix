@@ -1,7 +1,7 @@
 use super::rhai_handler;
 use super::types::{GridSettings, Pixel};
 use crate::outputs::common::init_logging;
-use crate::outputs::grid::rhai_handler::clear_engine;
+use crate::outputs::grid::rhai_handler::{clear_engine, compile};
 use crate::outputs::grid::types::GridSuccessReturn;
 use crate::types::{ErrorOutput, LogMessage, ScriptType, WasmResponse};
 use log::error;
@@ -34,12 +34,16 @@ pub fn run_grid(
     let logs_buf: Arc<Mutex<Vec<LogMessage>>> = Arc::new(Mutex::new(Vec::new()));
     let script_handler = rhai_handler::run_rhai;
     let mut script_engine = rhai_handler::create_engine();
+    let ast = match compile(&script, &script_engine) {
+        Ok(a) => a,
+        Err(err) => return WasmResponse::Error(err),
+    };
 
-    // let mut start = web_time::Instant::now();
+    let start = web_time::Instant::now();
     for y in 0..settings.res_y {
         for x in 0..settings.res_x {
             let result = script_handler(
-                &script,
+                &ast,
                 x,
                 y,
                 &settings,
@@ -55,17 +59,13 @@ pub fn run_grid(
                 };
                 return WasmResponse::Error(err_with_logs);
             }
-
-            // Profile time per pixel
-            // if x == settings.res_x - 1 {
-            //     let elapsed = start.elapsed();
-            //     let elapsed_ms = elapsed.as_secs_f64() * 1000.0;
-            //     let ms_per_pixel = elapsed_ms / settings.res_x as f64;
-            //     trace!("Time per pixel: {:.3} ms", ms_per_pixel);
-            //     start = web_time::Instant::now();
-            // }
         }
     }
+    // Profile time per pixel
+    let elapsed = start.elapsed();
+    let elapsed_ms = elapsed.as_secs_f64() * 1000.0;
+    let ms_per_pixel = elapsed_ms / (settings.res_x * settings.res_y) as f64;
+    log::trace!("Time per pixel: {:.3} ms", ms_per_pixel);
 
     let rgba: Vec<u8> = out_buf
         .iter()
