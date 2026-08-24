@@ -2,7 +2,7 @@ import { get_element } from "./common";
 import { clear_all_canvas } from "./canvas";
 import { get_editor } from "./editor";
 import { get_output } from "./state";
-import { show_error } from "./ui";
+import { hide_error, show_error } from "./ui";
 import { clear_console } from "./console";
 
 const run_button = get_element<HTMLButtonElement>('#run-btn');
@@ -34,6 +34,8 @@ export const run_pipeline = async () => {
   run_button.classList.add('loading');
   run_button.disabled = true;
   middle_icon.classList.add('loading');
+
+  hide_error();
 
   const script = get_editor().getValue();
   let pipeline = get_output().pipeline;

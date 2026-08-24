@@ -74,20 +74,23 @@ export const set_select_value = (id: string, value: string) => {
   selected_opt.classList.add("selected");
 }
 
+const error_popup = get_element<HTMLDivElement>('#error-popup');
 const init_error = () => {
-  const error = get_element<HTMLDivElement>('#error-popup');
   document.addEventListener('click', (event) => {
     const target = event.target;
-    if (target instanceof Node && !error.contains(event.target as Node)) {
-      error?.classList.remove('shown');
+    if (target instanceof Node && !error_popup.contains(event.target as Node)) {
+      hide_error();
     }
   });
 }
 
 export const show_error = (msg: string) => {
-  const error = get_element<HTMLDivElement>('#error-popup');
-  error.innerText = msg;
-  error.classList.add('shown');
+  error_popup.innerText = msg;
+  error_popup.classList.add('shown');
+}
+
+export const hide_error = () => {
+  error_popup.classList.remove('shown');
 }
 
 export const init_ui = () => {
