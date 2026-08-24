@@ -335,3 +335,8 @@ input[type="number"]:focus {
 .error-pop:hover {
   background-color: var(--error-hover);
 }
+
+.editor-error-line {
+  background-color: var(--editor-error-highlight);
+  width: 100% !important;
+}

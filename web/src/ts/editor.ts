@@ -1,20 +1,21 @@
 import { throttle, get_element, debounce } from "./common";
 
-import type * as Monaco from "monaco-editor";
+import * as Monaco from "monaco-editor";
 import { run_pipeline } from "./interaction";
 import { get_state } from "./state";
 declare const require: any;
 declare const monaco: typeof Monaco;
+// Be careful to use monaco (lower case) when necessary in order not to import unnecessary files
 
-let editor: Monaco.editor.IStandaloneCodeEditor | undefined;
+let editor_global: Monaco.editor.IStandaloneCodeEditor | undefined;
 
 const editor_container = get_element<HTMLDivElement>('#editor-container');
 
 export const get_editor = (): Monaco.editor.IStandaloneCodeEditor => {
-  if (!editor) {
+  if (!editor_global) {
     throw new Error("editor not initialized yet.");
   }
-  return editor;
+  return editor_global;
 };
 
 const throttled_backup = throttle(() => {
@@ -29,7 +30,7 @@ const debounced_hot_reload = debounce(() => {
 }, 1000);
 
 const content_changed = () => {
-  if (!editor) {
+  if (!editor_global) {
     console.warn("editor not initialized yet.")
     return;
   }
@@ -59,7 +60,7 @@ export const init_editor = () => {
 
   require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' } });
   require(['vs/editor/editor.main'], function() {
-    editor = monaco.editor.create(editor_container, {
+    editor_global = monaco.editor.create(editor_container, {
       value: last_script,
       language: 'rust', // Rhai doesn't have a built-in syntax, but 'rust' looks very close!
       theme: 'vs-dark',
@@ -68,6 +69,37 @@ export const init_editor = () => {
       }
     });
 
-    editor.onDidChangeModelContent(content_changed);
+    editor_global.onDidChangeModelContent(content_changed);
   });
+}
+
+let highlights_collection: Monaco.editor.IEditorDecorationsCollection | undefined;
+const get_highlight_collection = (): Monaco.editor.IEditorDecorationsCollection => {
+  if (highlights_collection) {
+    return highlights_collection;
+  }
+  const editor = get_editor();
+  highlights_collection = editor?.createDecorationsCollection();
+  return highlights_collection as Monaco.editor.IEditorDecorationsCollection;
+}
+
+export const highlight_clear = () => {
+  const collection = get_highlight_collection();
+  collection?.clear();
+}
+
+export const highlight_line = (line: number) => {
+  highlight_clear();
+  const collection = get_highlight_collection();
+  collection.set([
+    {
+      range: new monaco.Range(line, 1, line, 1),
+      options: {
+        isWholeLine: true,
+        className: "editor-error-line",
+      }
+    }
+  ]);
+  const editor = get_editor();
+  editor.revealLineInCenterIfOutsideViewport(line);
 }

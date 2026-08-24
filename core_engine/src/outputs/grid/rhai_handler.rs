@@ -91,8 +91,8 @@ pub fn run_rhai(
             }
             _ => {
                 return Err(ErrorOutput::new(
-                    format!("Bad script! Error: {}", *err),
-                    None,
+                    (*err).to_string(),
+                    Some(CPosition::from_rhai(err.position())),
                 ));
             }
         }

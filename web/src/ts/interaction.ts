@@ -1,6 +1,6 @@
 import { get_element } from "./common";
 import { clear_all_canvas } from "./canvas";
-import { get_editor } from "./editor";
+import { get_editor, highlight_clear, highlight_line } from "./editor";
 import { get_output } from "./state";
 import { hide_error, show_error } from "./ui";
 import { clear_console } from "./console";
@@ -35,7 +35,7 @@ export const run_pipeline = async () => {
   run_button.disabled = true;
   middle_icon.classList.add('loading');
 
-  hide_error();
+  clear(false);
 
   const script = get_editor().getValue();
   let pipeline = get_output().pipeline;
@@ -44,6 +44,10 @@ export const run_pipeline = async () => {
   if (result) {
     console.error("Running script failed: " + result.text);
     show_error(result.text);
+    if (result.position) {
+      console.debug("Trying to highlight: " + result.position.line);
+      highlight_line(result.position.line);
+    }
   }
 
   run_button.classList.remove('loading');
@@ -52,7 +56,11 @@ export const run_pipeline = async () => {
   running = false;
 };
 
-const clear = () => {
-  clear_all_canvas();
+const clear = (canvas = true) => {
+  if (canvas) {
+    clear_all_canvas();
+  }
   clear_console();
+  hide_error();
+  highlight_clear();
 }
