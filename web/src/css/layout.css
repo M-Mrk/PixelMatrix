@@ -60,12 +60,18 @@ body {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
   gap: 0px 0px;
-
   background-color: var(--bg-1);
+
+  /* Allow height resizing */
+  min-height: 0;
 }
 
 .editor-container {
   grid-column: 1;
+
+  /* Allow resizing to smaller size */
+  min-width: 0;
+  min-height: 0;
 }
 
 .outer-out-container {

@@ -9,6 +9,7 @@ declare const monaco: typeof Monaco;
 
 let editor_global: Monaco.editor.IStandaloneCodeEditor | undefined;
 
+const parent_container = get_element<HTMLDivElement>('#in-out-container');
 const editor_container = get_element<HTMLDivElement>('#editor-container');
 
 export const get_editor = (): Monaco.editor.IStandaloneCodeEditor => {
@@ -42,6 +43,12 @@ const content_changed = () => {
   }
 };
 
+const resizing_observer = new ResizeObserver(() => {
+  console.debug("Editor resizing!");
+  const editor = get_editor();
+  editor.layout();
+});
+
 export const init_editor = () => {
   let last_script = window.localStorage.getItem("script");
   if (!last_script) {
@@ -63,13 +70,15 @@ export const init_editor = () => {
     editor_global = monaco.editor.create(editor_container, {
       value: last_script,
       language: 'rust', // Rhai doesn't have a built-in syntax, but 'rust' looks very close!
+      automaticLayout: true,
       theme: 'vs-dark',
       minimap: {
-        enabled: false,
+        enabled: false, // Not really neeeded for short scripts and creates visual bugs
       }
     });
 
     editor_global.onDidChangeModelContent(content_changed);
+    resizing_observer.observe(parent_container);
   });
 }
 
