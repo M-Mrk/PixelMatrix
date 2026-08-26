@@ -26,7 +26,7 @@ export const init_controls = () => {
 let running = false;
 export const run_pipeline = async () => {
   if (running) {
-    console.debug("pipeline already running!");
+    console.info("pipeline already running!");
     return;
   }
   running = true;
@@ -42,10 +42,9 @@ export const run_pipeline = async () => {
 
   const result = await pipeline(script);
   if (result) {
-    console.error("Running script failed: " + result.text);
+    console.warn("Running script failed: " + result.text);
     show_error(result.text);
     if (result.position) {
-      console.debug("Trying to highlight: " + result.position.line);
       highlight_line(result.position.line);
     }
   }

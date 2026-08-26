@@ -44,7 +44,6 @@ const content_changed = () => {
 };
 
 const resizing_observer = new ResizeObserver(() => {
-  console.debug("Editor resizing!");
   const editor = get_editor();
   editor.layout();
 });

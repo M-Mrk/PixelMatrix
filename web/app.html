@@ -54,22 +54,28 @@
       <div id="middle-icon"></div>
     </div>
 
-    <div class="console-container">
-      <div class="console-header">Console</div>
-      <div id="console">
-        <div id="console-scroll">
-          <div id="console-spacer"></div>
+    <div id="console-grid"> <!-- relative positioned item in the workspace grid -->
+      <div id="console-wrapper"> <!-- absolut postioned wrapper that resizes with drag handle -->
+        <div id="console-container"> <!-- relative positioned container for scroll and content -->
+          <div id="console-header">
+            <div>Console</div>
+            <div id="console-drag-handle">=====</div>
+          </div>
+          <div id="console">
+            <div id="console-scroll">
+              <div id="console-spacer"></div>
+            </div>
+            <div id="console-content"></div>
+          </div>
+          <div class="error-pop" id="error-popup"></div>
         </div>
-        <div id="console-content"></div>
       </div>
-      <div class="error-pop" id="error-popup"></div>
     </div>
-  </div>
-  <canvas id="canvas-hidden" width="16" height="16" style="display: none;"></canvas>
+    <canvas id="canvas-hidden" width="16" height="16" style="display: none;"></canvas>
 
-  <script type="module" src="src/ts/app.js"></script>
-  <!-- External JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+    <script type="module" src="src/ts/app.js"></script>
+    <!-- External JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
 </body>
 
 </html>

@@ -13,11 +13,11 @@ const await_free_worker = async (): Promise<boolean> => {
   if (!worker_occupied) {
     return true;
   }
-  console.debug("Awaiting worker to be freed");
+  console.info("Awaiting worker to be freed");
   return new Promise((resolve) => {
     const interval = setInterval(() => {
       if (!worker_occupied) {
-        console.debug("Continuing as worker is now free");
+        console.info("Continuing as worker is now free");
         clearInterval(interval);
         resolve(true);
       }

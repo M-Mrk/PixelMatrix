@@ -1,4 +1,22 @@
-.console-container {
+#console-grid {
+  position: relative;
+  background-color: var(--bg-1);
+  display: flex;
+}
+
+#console-wrapper {
+  flex: 1;
+  z-index: 5;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: var(--console-height);
+}
+
+#console-container {
+  flex: 1;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -7,9 +25,38 @@
   overflow: hidden;
 }
 
-.console-header {
+#console-header {
+  position: relative;
   padding: var(--space-sm) 0 var(--space-sm) var(--space-md);
   background-color: var(--bg-0);
+}
+
+#console-drag-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  user-select: none;
+  cursor: grab;
+  padding: var(--space-xs);
+  color: var(--input);
+  transition: background-color var(--transition-fast);
+}
+
+#console-drag-handle:hover {
+  background-color: var(--input-hover);
+}
+
+#console-drag-handle.dragging {
+  background-color: var(--input-hover);
+  cursor: grabbing !important;
+}
+
+/* make element and all children have the correct cursor whilst dragging */
+body.dragging,
+body.dragging * {
+  cursor: grabbing !important;
 }
 
 #console {

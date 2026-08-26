@@ -1,8 +1,11 @@
 import { LogMessage } from "../../pkg/wasm/core_engine";
 import { get_element } from "./common";
 
-const container = get_element<HTMLDivElement>('#console');
-const scroll = get_element<HTMLDivElement>('#console-scroll')
+const grid_element = get_element<HTMLDivElement>('#console-grid');
+const inner_container = get_element<HTMLDivElement>('#console');
+const header = get_element<HTMLDivElement>('#console-header');
+const handle = get_element<HTMLDivElement>('#console-drag-handle');
+const scroll = get_element<HTMLDivElement>('#console-scroll');
 const spacer = get_element<HTMLDivElement>('#console-spacer');
 const content = get_element<HTMLDivElement>('#console-content');
 
@@ -55,7 +58,7 @@ const max_logs_showable = (): number => {
     log_h = 1;
   }
 
-  const container_h = container.offsetHeight;
+  const container_h = inner_container.offsetHeight;
   return (container_h / log_h);
 }
 
@@ -101,9 +104,42 @@ export const add_logs = (logs: LogMessage[]) => {
   render_logs();
 }
 
+let wrapper_h = 0;
+const set_wrapper_height = (h: number): { clamped: boolean } => {
+  let clamped = false;
+  wrapper_h = h;
+  const grid_height = grid_element.getBoundingClientRect().height;
+  if (wrapper_h < grid_height) {
+    wrapper_h = grid_height;
+    clamped = true;
+  }
+
+  grid_element.style.setProperty('--console-height', wrapper_h + 'px');
+  return { clamped };
+}
+
+const create_drag_handler = (start_y: number): ((event: PointerEvent) => void) => {
+  let last_y = start_y;
+  const func = (event: PointerEvent) => {
+    const new_y = event.screenY;
+    const delta_y = last_y - new_y;
+    last_y = new_y;
+    const clamped = set_wrapper_height(wrapper_h + delta_y).clamped;
+    if (clamped) {
+      // cancel drag
+      const up_event = new PointerEvent('pointerup', {});
+      header.dispatchEvent(up_event);
+    }
+  };
+  return func;
+}
+
 export const init_console = () => {
+  // set inital size matching grid (auto clamps)
+  set_wrapper_height(0);
+
   // render on resize
-  console_size_observer.observe(container);
+  console_size_observer.observe(inner_container);
 
   // render on scrolling
   scroll.addEventListener('scroll', () => {
@@ -114,5 +150,21 @@ export const init_console = () => {
   content.addEventListener('wheel', (event) => {
     event.preventDefault();
     scroll.scrollTop = scroll.scrollTop + event.deltaY;
+  });
+
+  // handle dragging motion for resizing
+  header.addEventListener('pointerdown', (event) => {
+    header.setPointerCapture(event.pointerId);
+    handle.classList.add('dragging');
+    document.body.classList.add('dragging');
+
+    const drag_handler = create_drag_handler(event.screenY);
+    header.addEventListener('pointermove', drag_handler);
+    header.addEventListener('pointerup', () => {
+      header.removeEventListener('pointermove', drag_handler);
+      header.releasePointerCapture(event.pointerId);
+      handle.classList.remove('dragging');
+      document.body.classList.remove('dragging');
+    })
   });
 }

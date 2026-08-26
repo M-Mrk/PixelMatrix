@@ -14,7 +14,7 @@ body {
 .workspace {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 0.5fr 8fr 2fr;
+  grid-template-rows: 1fr 16fr 8vh;
   gap: 0px;
 
   width: 100vw;
