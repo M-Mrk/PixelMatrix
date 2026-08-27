@@ -7,12 +7,14 @@ const id_res_x = "#setting-grid-res-x";
 const id_res_y = "#setting-grid-res-y";
 const id_clamp = "#setting-grid-clamp";
 const id_blur = "#setting-grid-blur";
+const id_square = "#setting-grid-square";
 
 export let settings: GridSettings = {
   res_x: 16,
   res_y: 16,
   clamp: false,
   blur: false,
+  square: false,
 };
 
 const update_settings_from_page = () => {
@@ -42,6 +44,9 @@ const update_settings_from_page = () => {
   const setting_blur = get_element<HTMLInputElement>(id_blur);
   settings.blur = setting_blur.checked;
 
+  const setting_square = get_element<HTMLInputElement>(id_square);
+  settings.square = setting_square.checked;
+
   window.localStorage.setItem('grid-settings', JSON.stringify(settings));
 };
 
@@ -70,6 +75,10 @@ const add_settings = () => {
       <input type="checkbox" name="Blur" id="${id_blur.slice(1)}">
       <span>Blur</span>
     </label>
+    <label class="checkbox" data-help="Make output always a square by stretching pixels.">
+      <input type="checkbox" name="Square output" id="${id_square.slice(1)}">
+      <span>Square Output</span>
+    </label>
     `
 
   if (!settings_container) {
@@ -88,12 +97,17 @@ const add_settings = () => {
     setting_blur.checked = true;
   }
 
+  if (settings.square) {
+    const setting_square = get_element<HTMLInputElement>(id_square);
+    setting_square.checked = true;
+  }
+
   settings_container.addEventListener('input', update_settings_from_page);
 };
 
 const add_output = () => {
   const canvas_html = html`
-    <canvas id="canvas-output" width="600" height="600"></canvas>
+    <canvas id="canvas-output"></canvas>
   `
   output_inner.innerHTML = canvas_html;
 }

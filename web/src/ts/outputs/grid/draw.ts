@@ -29,6 +29,40 @@ const draw_hidden_image = (canvas: OffscreenCanvas, image: ImageData) => {
   );
 }
 
+const set_canvas_size = (settings: GridSettings) => {
+  const output_canvas = get_element<HTMLCanvasElement>('#canvas-output');
+  const width_ratio = settings.res_x / settings.res_y;
+  const height_ratio = settings.res_y / settings.res_x;
+
+  output_canvas.width = 0;
+  output_canvas.height = 0;
+  const container = get_element<HTMLDivElement>('#output-inner');
+  const container_style = window.getComputedStyle(container);
+  const max_width = parseFloat(container_style.width);
+  const max_height = parseFloat(container_style.height);
+
+  let width;
+  let height;
+
+  if (width_ratio >= height_ratio) {
+    output_canvas.width = max_width;
+    const ideal_height = max_width * height_ratio;
+    height = ideal_height < max_height ? ideal_height : max_height;
+  } else {
+    height = max_height;
+    const ideal_width = max_height * width_ratio;
+    width = ideal_width < max_width ? ideal_width : max_width;
+  }
+
+  if (settings.square) {
+    width = max_width <= max_height ? max_width : max_height;
+    height = max_height < max_width ? max_height : max_width;
+  }
+
+  output_canvas.width = width as number;
+  output_canvas.height = height as number;
+};
+
 const transfer_hidden_image = (canvas: OffscreenCanvas, settings: GridSettings) => {
   const output_canvas = get_element<HTMLCanvasElement>('#canvas-output');
 
@@ -45,6 +79,7 @@ export const full_draw = (pixels: Uint8ClampedArray, settings: GridSettings) => 
   const image = create_image(pixels, settings);
   const hidden_canvas = new OffscreenCanvas(settings.res_x, settings.res_y);
   draw_hidden_image(hidden_canvas, image);
+  set_canvas_size(settings);
   transfer_hidden_image(hidden_canvas, settings);
   console.timeEnd("drawing");
 };
