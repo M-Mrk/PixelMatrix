@@ -18,6 +18,7 @@ export type Language = typeof Language[keyof typeof Language];
 
 export interface Output {
   pipeline(script: string): Promise<ErrorOutput | null>,
+  clear(): void,
   init(): void,
   deinit(): void,
 };

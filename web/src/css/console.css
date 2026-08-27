@@ -1,65 +1,54 @@
-#console-grid {
-  position: relative;
-  background-color: var(--bg-1);
-  display: flex;
-}
-
-#console-wrapper {
+.console {
   flex: 1;
   z-index: 5;
   position: absolute;
   bottom: 0;
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
   height: var(--console-height);
 }
 
-#console-container {
-  flex: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  min-width: 0;
-  overflow: hidden;
-}
-
-#console-header {
+.console-header {
   position: relative;
   padding: var(--space-sm) 0 var(--space-sm) var(--space-md);
   background-color: var(--bg-0);
+  cursor: grab;
 }
 
-#console-drag-handle {
+.console-header * {
+  user-select: none;
+}
+
+.console-handle {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  user-select: none;
-  cursor: grab;
   padding: var(--space-xs);
   color: var(--input);
   transition: background-color var(--transition-fast);
 }
 
-#console-drag-handle:hover {
+.console-handle:hover {
   background-color: var(--input-hover);
 }
 
-#console-drag-handle.dragging {
+.console-handle.dragging {
   background-color: var(--input-hover);
   cursor: grabbing !important;
 }
 
-/* make element and all children have the correct cursor whilst dragging */
+/* make everything have the correct cursor whilst dragging */
 body.dragging,
 body.dragging * {
   cursor: grabbing !important;
 }
 
-#console {
+.console-inner {
   height: 100%;
   background-color: var(--bg-1);
   font-family: var(--font-mono);
@@ -67,7 +56,7 @@ body.dragging * {
   position: relative;
 }
 
-#console-scroll {
+.console-scroll {
   position: absolute;
   top: 0;
   width: 100%;
@@ -76,7 +65,7 @@ body.dragging * {
   overflow-y: auto;
 }
 
-#console-content {
+.console-content {
   position: absolute;
   top: 0;
   left: 0;

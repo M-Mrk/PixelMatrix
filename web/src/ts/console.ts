@@ -1,10 +1,12 @@
 import { LogMessage } from "../../pkg/wasm/core_engine";
 import { get_element } from "./common";
 
-const grid_element = get_element<HTMLDivElement>('#console-grid');
-const inner_container = get_element<HTMLDivElement>('#console');
+const grid_placeholder = get_element<HTMLDivElement>('#console-grid-placeholder');
+
 const header = get_element<HTMLDivElement>('#console-header');
-const handle = get_element<HTMLDivElement>('#console-drag-handle');
+const handle = get_element<HTMLDivElement>('#console-handle');
+
+const container_inner = get_element<HTMLDivElement>('#console-inner');
 const scroll = get_element<HTMLDivElement>('#console-scroll');
 const spacer = get_element<HTMLDivElement>('#console-spacer');
 const content = get_element<HTMLDivElement>('#console-content');
@@ -58,7 +60,7 @@ const max_logs_showable = (): number => {
     log_h = 1;
   }
 
-  const container_h = inner_container.offsetHeight;
+  const container_h = container_inner.offsetHeight;
   return (container_h / log_h);
 }
 
@@ -108,13 +110,13 @@ let wrapper_h = 0;
 const set_wrapper_height = (h: number): { clamped: boolean } => {
   let clamped = false;
   wrapper_h = h;
-  const grid_height = grid_element.getBoundingClientRect().height;
+  const grid_height = grid_placeholder.getBoundingClientRect().height;
   if (wrapper_h < grid_height) {
     wrapper_h = grid_height;
     clamped = true;
   }
 
-  grid_element.style.setProperty('--console-height', wrapper_h + 'px');
+  grid_placeholder.style.setProperty('--console-height', wrapper_h + 'px');
   return { clamped };
 }
 
@@ -139,7 +141,7 @@ export const init_console = () => {
   set_wrapper_height(0);
 
   // render on resize
-  console_size_observer.observe(inner_container);
+  console_size_observer.observe(container_inner);
 
   // render on scrolling
   scroll.addEventListener('scroll', () => {
@@ -154,6 +156,7 @@ export const init_console = () => {
 
   // handle dragging motion for resizing
   header.addEventListener('pointerdown', (event) => {
+    event.preventDefault();
     header.setPointerCapture(event.pointerId);
     handle.classList.add('dragging');
     document.body.classList.add('dragging');

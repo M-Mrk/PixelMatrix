@@ -270,7 +270,7 @@ input[type="number"]:focus {
 }
 
 /* INFO: middle icon */
-#middle-icon {
+.middle-icon {
   position: absolute;
   z-index: 2;
   grid-row: 1;
@@ -290,11 +290,11 @@ input[type="number"]:focus {
   transition: background-color var(--transition-fast);
 }
 
-#middle-icon::before {
+.middle-icon::before {
   content: "\2192";
 }
 
-#middle-icon:hover {
+.middle-icon:hover {
   background-color: var(--input-hover);
 }
 

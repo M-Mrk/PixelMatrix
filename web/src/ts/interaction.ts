@@ -1,5 +1,4 @@
 import { get_element } from "./common";
-import { clear_all_canvas } from "./canvas";
 import { get_editor, highlight_clear, highlight_line } from "./editor";
 import { get_output } from "./state";
 import { hide_error, show_error } from "./ui";
@@ -55,9 +54,9 @@ export const run_pipeline = async () => {
   running = false;
 };
 
-const clear = (canvas = true) => {
-  if (canvas) {
-    clear_all_canvas();
+const clear = (output = true) => {
+  if (output) {
+    get_output().clear();
   }
   clear_console();
   hide_error();

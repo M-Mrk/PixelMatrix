@@ -1,5 +1,4 @@
 import { get_element } from "../../common";
-import { output_canvas } from "../../canvas";
 
 const hidden_canvas = get_element<HTMLCanvasElement>('#canvas-hidden');
 
@@ -43,10 +42,7 @@ const transfer_hidden_image = () => {
     console.error("Hidden canvas not found.");
     return;
   }
-  if (!output_canvas) {
-    console.error("Output canvas not found.");
-    return;
-  }
+  const output_canvas = get_element<HTMLCanvasElement>('#canvas-output');
 
   const ctx = output_canvas.getContext("2d");
   if (!ctx) {

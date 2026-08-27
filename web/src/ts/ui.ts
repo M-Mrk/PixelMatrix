@@ -74,7 +74,7 @@ export const set_select_value = (id: string, value: string) => {
   selected_opt.classList.add("selected");
 }
 
-const error_popup = get_element<HTMLDivElement>('#error-popup');
+const error_popup = get_element<HTMLDivElement>('#error-pop');
 const init_error = () => {
   document.addEventListener('click', (event) => {
     const target = event.target;

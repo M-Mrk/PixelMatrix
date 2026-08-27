@@ -74,7 +74,7 @@ body {
   min-height: 0;
 }
 
-.outer-out-container {
+.output-container {
   grid-column: 2;
   display: grid;
   grid-template-columns: 1fr;
@@ -93,7 +93,7 @@ body {
   padding-right: 12px;
 }
 
-.inner-out-container {
+.output-inner {
   display: flex;
   align-items: center;
   justify-content: center;

@@ -9,20 +9,20 @@
 </head>
 
 <body data-theme="dark">
-  <div id="workspace" class="workspace" data-focused="code">
-    <div id="topbar" class="topbar">
+  <div class="workspace" data-focused="code">
+    <div class="topbar">
       <div>PixelMatrix</div>
       <div class="top-interactives">
         <div id="top-settings" class="input-group">
           <div id="setting-language" class="tui-select" data-selected="rhai">
             <div class="tui-select-trigger">Language</div>
-            <div class="tui-select-dropdown" id="setting-languagee">
+            <div class="tui-select-dropdown" id="setting-language">
               <div class="tui-select-option selected" data-value="rhai">Rhai</div>
             </div>
           </div>
           <div id="setting-output-type" class="tui-select" data-selected="grid">
             <div class="tui-select-trigger">Output</div>
-            <div class="tui-select-dropdown" id="setting-languagee">
+            <div class="tui-select-dropdown" id="setting-output-type">
               <div class="tui-select-option selected" data-value="grid">Grid</div>
             </div>
           </div>
@@ -42,36 +42,30 @@
     <div id="in-out-container" class="in-out-container">
       <div class="editor-container" id="editor-container"></div>
 
-      <div class="outer-out-container">
-        <div class="output-toolbar" id="output-toolbar">
-        </div>
-        <div class="inner-out-container" id="inner-out-container">
-
-          <canvas id="canvas-output" width="600" height="600"></canvas>
-        </div>
+      <div class="output-container">
+        <div class="output-toolbar" id="output-toolbar"></div>
+        <div class="output-inner" id="output-inner"></div>
       </div>
 
-      <div id="middle-icon"></div>
+      <div class="middle-icon" id="middle-icon"></div>
     </div>
 
-    <div id="console-grid"> <!-- relative positioned item in the workspace grid -->
-      <div id="console-wrapper"> <!-- absolut postioned wrapper that resizes with drag handle -->
-        <div id="console-container"> <!-- relative positioned container for scroll and content -->
-          <div id="console-header">
-            <div>Console</div>
-            <div id="console-drag-handle">=====</div>
-          </div>
-          <div id="console">
-            <div id="console-scroll">
-              <div id="console-spacer"></div>
-            </div>
-            <div id="console-content"></div>
-          </div>
-          <div class="error-pop" id="error-popup"></div>
+    <div id="console-grid-placeholder"> <!-- relative positioned item in the workspace grid -->
+      <div id="console" class="console"> <!-- absolut postioned wrapper that resizes with drag handle -->
+        <div id="console-header" class="console-header">
+          <div>Console</div>
+          <div id="console-handle" class="console-handle">=====</div>
         </div>
+        <div id="console-inner" class="console-inner">
+          <div id="console-scroll" class="console-scroll">
+            <div id="console-spacer"></div>
+          </div>
+          <div id="console-content" class="console-content"></div>
+        </div>
+        <div class="error-pop" id="error-pop"></div>
       </div>
     </div>
-    <canvas id="canvas-hidden" width="16" height="16" style="display: none;"></canvas>
+    <canvas id="canvas-hidden" style="display: none;"></canvas>
 
     <script type="module" src="src/ts/app.js"></script>
     <!-- External JS -->
