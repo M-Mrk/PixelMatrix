@@ -27,6 +27,7 @@ pub struct GridSettings {
     pub res_x: i32,
     pub res_y: i32,
     pub clamp: bool,
+    pub blur: bool,
 }
 
 #[wasm_bindgen]
