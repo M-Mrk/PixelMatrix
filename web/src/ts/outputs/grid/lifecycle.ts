@@ -6,11 +6,13 @@ const output_inner = get_element<HTMLDivElement>('#output-inner');
 const id_res_x = "#setting-grid-res-x";
 const id_res_y = "#setting-grid-res-y";
 const id_clamp = "#setting-grid-clamp";
+const id_blur = "#setting-grid-blur";
 
 export let settings: GridSettings = {
   res_x: 16,
   res_y: 16,
   clamp: false,
+  blur: false,
 };
 
 const update_settings_from_page = () => {
@@ -37,6 +39,9 @@ const update_settings_from_page = () => {
   const setting_clamp = get_element<HTMLInputElement>(id_clamp);
   settings.clamp = setting_clamp.checked;
 
+  const setting_blur = get_element<HTMLInputElement>(id_blur);
+  settings.blur = setting_blur.checked;
+
   window.localStorage.setItem('grid-settings', JSON.stringify(settings));
 };
 
@@ -50,16 +55,20 @@ const add_settings = () => {
     <label class="input-wrapper">
       Resolution:
       <label class="number"> 
-        <input type="number" name="Resolution width" value="${settings.res_x}" min="1" step="1" id="setting-grid-res-x">
+        <input type="number" name="Resolution width" value="${settings.res_x}" min="1" step="1" id="${id_res_x.slice(1)}">
       </label>
         x
       <label class="number">
-      <input type="number" name="Resolution height" value="${settings.res_y}" min="1" step="1" id="setting-grid-res-y">
+      <input type="number" name="Resolution height" value="${settings.res_y}" min="1" step="1" id="${id_res_y.slice(1)}">
       </label>
     </label>
     <label class="checkbox">
-      <input type="checkbox" name="Auto clamp output" id="setting-grid-clamp">
+      <input type="checkbox" name="Auto clamp output" id="${id_clamp.slice(1)}">
       <span>Auto clamp output</span>
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" name="Blur" id="${id_blur.slice(1)}">
+      <span>Blur</span>
     </label>
     `
 
@@ -72,6 +81,11 @@ const add_settings = () => {
   if (settings.clamp) {
     const setting_clamp = get_element<HTMLInputElement>(id_clamp);
     setting_clamp.checked = true;
+  }
+
+  if (settings.blur) {
+    const setting_blur = get_element<HTMLInputElement>(id_blur);
+    setting_blur.checked = true;
   }
 
   settings_container.addEventListener('input', update_settings_from_page);

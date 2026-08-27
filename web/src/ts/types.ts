@@ -1,4 +1,4 @@
-import { ErrorOutput, GridSettings, LogMessage, Position } from "../../pkg/wasm/core_engine";
+import { ErrorOutput, GridSettings, LogMessage } from "../../pkg/wasm/core_engine";
 
 export interface AppState {
   output_type: OutputType,

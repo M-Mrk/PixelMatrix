@@ -4,7 +4,6 @@ import { execute } from "../../worker/executor";
 import { get_state } from "../../state";
 import { WorkerRequest } from "../../types";
 import { ErrorOutput } from "../../../../pkg/wasm/core_engine";
-import { add_logs } from "../../console";
 
 export const run = async (script: string): Promise<ErrorOutput | null> => {
   let output;
@@ -21,6 +20,6 @@ export const run = async (script: string): Promise<ErrorOutput | null> => {
   } finally {
     console.timeEnd("interpreting rhai script");
   }
-  full_draw(output, settings.res_x, settings.res_y);
+  full_draw(output, settings);
   return null;
 };
