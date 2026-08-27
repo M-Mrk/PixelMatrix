@@ -315,9 +315,9 @@ input[type="number"]:focus {
   display: none;
   position: absolute;
   z-index: 5;
-  top: 50%;
+  bottom: var(--space-sm);
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
 
 }
 
@@ -326,6 +326,7 @@ input[type="number"]:focus {
 }
 
 .error-pop-inner {
+  z-index: inherit;
   background-color: var(--bg-0);
   padding: var(--space-md);
   outline: 3px dashed var(--error-border);
@@ -357,4 +358,64 @@ input[type="number"]:focus {
 .editor-error-line {
   background-color: var(--editor-error-highlight);
   width: 100% !important;
+}
+
+/* INFO: Help box */
+.help-box {
+  display: none;
+  position: absolute;
+  right: var(--space-sm);
+  bottom: var(--space-sm);
+  z-index: 4;
+}
+
+.help-box.shown {
+  display: block;
+}
+
+.help-box.disabled {
+  display: none !important;
+}
+
+.help-inner {
+  position: relative;
+  background-color: var(--bg-0);
+  padding: var(--space-md);
+  outline: 3px dotted var(--help);
+  outline-offset: calc(var(--space-md)/2*-1);
+  color: var(--text);
+}
+
+.help-top {
+  position: absolute;
+  top: 0;
+  left: var(--space-md);
+  right: var(--space-sm);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: var(--help);
+}
+
+.help-top * {
+  background-color: var(--bg-0);
+  padding: 0 var(--space-xs) 0 var(--space-xs);
+}
+
+.help-close-btn {
+  font-size: var(--font-size-md);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.help-close-btn:hover {
+  background-color: var(--help-hover);
+}
+
+.help-content {
+  margin-top: var(--space-xs);
+  max-width: 25vw;
+  max-height: 10vh;
+  overflow-y: auto;
+  font-size: var(--font-size-sm);
 }

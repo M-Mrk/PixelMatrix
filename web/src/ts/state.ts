@@ -5,6 +5,7 @@ const app_state: AppState = {
   output_type: OutputType.GRID,
   language: Language.RHAI,
   hot_reload: false,
+  disable_help: false,
 }
 
 export const get_state = () => app_state;

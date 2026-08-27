@@ -4,6 +4,7 @@ export interface AppState {
   output_type: OutputType,
   language: Language,
   hot_reload: boolean,
+  disable_help: boolean,
 }
 
 export const OutputType = {
