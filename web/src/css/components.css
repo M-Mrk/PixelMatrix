@@ -319,6 +319,13 @@ input[type="number"]:focus {
   left: 50%;
   transform: translate(-50%, -50%);
 
+}
+
+.error-pop.shown {
+  display: block;
+}
+
+.error-pop-inner {
   background-color: var(--bg-0);
   padding: var(--space-md);
   outline: 3px dashed var(--error-border);
@@ -326,14 +333,25 @@ input[type="number"]:focus {
   animation: error-outline-blink 1s step-start infinite;
   color: var(--error);
   transition: background var(--transition-fast);
+
+  position: relative;
 }
 
-.error-pop.shown {
-  display: block;
-}
-
-.error-pop:hover {
+.error-pop-inner:hover {
   background-color: var(--error-hover);
+}
+
+.error-pop-title {
+  position: absolute;
+  user-select: none;
+  top: 0;
+  left: var(--space-md);
+  padding: 0 var(--space-xs) 0 var(--space-xs);
+  background-color: inherit;
+}
+
+.error-pop-content {
+  margin-top: var(--space-sm);
 }
 
 .editor-error-line {
