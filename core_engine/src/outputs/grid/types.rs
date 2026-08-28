@@ -4,6 +4,16 @@ use wasm_bindgen::{Clamped, prelude::*};
 
 use crate::types::LogMessage;
 
+#[derive(Serialize, Deserialize, Tsify)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct GridSettings {
+    pub res_x: i32,
+    pub res_y: i32,
+    pub clamp: bool,
+    pub blur: bool,
+    pub square: bool,
+}
+
 #[wasm_bindgen]
 #[derive(Debug, Clone, Copy)]
 pub struct Pixel {
@@ -19,15 +29,6 @@ impl Pixel {
             b: rgb.2,
         }
     }
-}
-
-#[derive(Serialize, Deserialize, Tsify)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct GridSettings {
-    pub res_x: i32,
-    pub res_y: i32,
-    pub clamp: bool,
-    pub blur: bool,
 }
 
 #[wasm_bindgen]
