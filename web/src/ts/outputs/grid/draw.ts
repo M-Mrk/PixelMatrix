@@ -44,23 +44,33 @@ const set_canvas_size = (settings: GridSettings) => {
   let width;
   let height;
 
-  if (width_ratio >= height_ratio) {
-    output_canvas.width = max_width;
-    const ideal_height = max_width * height_ratio;
-    height = ideal_height < max_height ? ideal_height : max_height;
-  } else {
-    height = max_height;
-    const ideal_width = max_height * width_ratio;
-    width = ideal_width < max_width ? ideal_width : max_width;
-  }
-
-  if (settings.square) {
+  if (width_ratio == height_ratio || settings.square) {
+    // Square output
     width = max_width <= max_height ? max_width : max_height;
     height = max_height < max_width ? max_height : max_width;
+  } else if (width_ratio > height_ratio) {
+    // Prioritze width
+    width = max_width;
+    const ideal_height = max_width * height_ratio;
+    height = ideal_height;
+  } else {
+    // Prioritize height
+    height = max_height;
+    const ideal_width = max_height * width_ratio;
+    width = ideal_width;
   }
 
-  output_canvas.width = width as number;
-  output_canvas.height = height as number;
+  if (width > max_width) {
+    console.warn("width larger than max, clamping");
+    width = max_width
+  }
+  if (height > max_height) {
+    console.warn("height larger than max, clamping");
+    height = max_height;
+  }
+
+  output_canvas.width = width;
+  output_canvas.height = height;
 };
 
 const transfer_hidden_image = (canvas: OffscreenCanvas, settings: GridSettings) => {
