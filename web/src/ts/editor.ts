@@ -78,6 +78,7 @@ export const init_editor = () => {
 
     editor_global.onDidChangeModelContent(content_changed);
     resizing_observer.observe(parent_container);
+    editor_global.layout();
   });
 }
 

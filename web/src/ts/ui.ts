@@ -1,5 +1,6 @@
 import { get_element } from "./common";
 import { init_console } from "./console";
+import { init_mobile } from "./mobile";
 
 /* INFO: Select */
 const init_selects = () => {
@@ -172,4 +173,5 @@ export const init_ui = () => {
 
   // seperate files
   init_console();
+  init_mobile();
 };

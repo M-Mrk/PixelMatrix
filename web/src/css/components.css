@@ -16,6 +16,8 @@ button {
   background-color: inherit;
   cursor: pointer;
   transition: background-color var(--transition-fast);
+  white-space: nowrap;
+  text-wrap: nowrap;
 }
 
 button::before {
@@ -97,6 +99,8 @@ button:hover {
   color: var(--input);
   transition: background-color var(--transition-fast);
   cursor: pointer;
+  white-space: nowrap;
+  text-wrap: nowrap;
 }
 
 .checkbox:hover {

@@ -9,10 +9,14 @@
 </head>
 
 <body data-theme="dark">
-  <div class="workspace" data-focused="code">
+  <div class="workspace">
     <div class="topbar">
       <div>PixelMatrix</div>
-      <div class="top-interactives">
+      <div class="tabbar" id="tabbar">
+        <i class="nf nf-fa-code" id="tabbar-code"></i>
+        <i class="nf nf-md-file_export" id="tabbar-output"></i>
+      </div>
+      <div class="top-interactives" id="top-interactives">
         <div id="top-settings" class="input-group">
           <div id="setting-language" class="tui-select" data-selected="rhai">
             <div class="tui-select-trigger">Language</div>
@@ -40,13 +44,13 @@
           <button id="clear-btn">Clear</button>
         </div>
       </div>
+      <div class="top-menu-btn" id="top-menu-btn">⚙</div>
     </div>
-    <div class="tabbar" id="tabbar"></div>
 
     <div id="in-out-container" class="in-out-container">
       <div class="editor-container" id="editor-container"></div>
 
-      <div class="output-container">
+      <div class="output-container" id="output-container">
         <div class="output-toolbar" id="output-toolbar"></div>
         <div class="output-inner" id="output-inner"></div>
       </div>

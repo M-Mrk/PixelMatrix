@@ -3,3 +3,6 @@
 @import url("themes.css");
 @import url("components.css");
 @import url("console.css");
+@import url("mobile.css");
+
+@import "https://www.nerdfonts.com/assets/css/webfont.css"
