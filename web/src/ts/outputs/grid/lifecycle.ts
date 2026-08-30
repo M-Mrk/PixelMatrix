@@ -1,5 +1,6 @@
 import { GridSettings } from "../../../../pkg/wasm/core_engine";
 import { get_element, html } from "../../common";
+import { clear_output, show_last_draw } from "./draw";
 
 const settings_container = get_element<HTMLDivElement>('#output-toolbar');
 const output_inner = get_element<HTMLDivElement>('#output-inner');
@@ -105,11 +106,14 @@ const add_settings = () => {
   settings_container.addEventListener('input', update_settings_from_page);
 };
 
+
+const obs = new ResizeObserver(show_last_draw);
 const add_output = () => {
   const canvas_html = html`
     <canvas id="canvas-output"></canvas>
   `
   output_inner.innerHTML = canvas_html;
+  obs.observe(document.documentElement);
 }
 
 export const init = () => {
@@ -118,14 +122,10 @@ export const init = () => {
 };
 
 export const clear = () => {
-  const output_canvas = get_element<HTMLCanvasElement>('#canvas-output');
-  const out_ctx = output_canvas.getContext("2d");
-  if (!out_ctx) {
-    throw new Error("could not get output_canvas context");
-  }
-  out_ctx.clearRect(0, 0, output_canvas.width, output_canvas.height);
+  clear_output();
 }
 
 export const deinit = () => {
   settings_container.removeEventListener('input', update_settings_from_page);
+  obs.disconnect();
 };

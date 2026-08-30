@@ -84,12 +84,37 @@ const transfer_hidden_image = (canvas: OffscreenCanvas, settings: GridSettings) 
   ctx.drawImage(canvas, 0, 0, output_canvas.width, output_canvas.height);
 }
 
+let last_settings: GridSettings | null;
+let last_image: ImageData | null;
 export const full_draw = (pixels: Uint8ClampedArray, settings: GridSettings) => {
   console.time("drawing");
+  last_settings = settings;
   const image = create_image(pixels, settings);
+  last_image = image;
   const hidden_canvas = new OffscreenCanvas(settings.res_x, settings.res_y);
   draw_hidden_image(hidden_canvas, image);
   set_canvas_size(settings);
   transfer_hidden_image(hidden_canvas, settings);
   console.timeEnd("drawing");
+};
+
+export const show_last_draw = () => {
+  if (!last_settings || !last_image) {
+    return;
+  }
+  const hidden_canvas = new OffscreenCanvas(last_settings.res_x, last_settings.res_y);
+  draw_hidden_image(hidden_canvas, last_image);
+  set_canvas_size(last_settings);
+  transfer_hidden_image(hidden_canvas, last_settings);
+};
+
+export const clear_output = () => {
+  const output_canvas = get_element<HTMLCanvasElement>('#canvas-output');
+  const out_ctx = output_canvas.getContext("2d");
+  if (!out_ctx) {
+    throw new Error("could not get output_canvas context");
+  }
+  out_ctx.clearRect(0, 0, output_canvas.width, output_canvas.height);
+  last_settings = null;
+  last_image = null;
 };
