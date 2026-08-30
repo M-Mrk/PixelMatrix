@@ -16,10 +16,11 @@ const init_interactives = () => {
     if (!target || !(target instanceof HTMLElement)) {
       return;
     }
-    if (!target.contains(top_interactives)) {
-      document.removeEventListener('click', close_handler);
-      top_interactives.classList.remove('shown');
-    }
+    // Too unreliable
+    // if (!target.contains(top_interactives)) {
+    //   document.removeEventListener('click', close_handler);
+    //   top_interactives.classList.remove('shown');
+    // }
   }
   top_toggle_btn.addEventListener('click', () => {
     if (top_interactives.classList.contains('shown')) {
@@ -28,7 +29,7 @@ const init_interactives = () => {
     } else {
       setTimeout(() => {
         document.addEventListener('click', close_handler);
-      }, 50);
+      }, 100);
       top_interactives.classList.add('shown');
     }
   });

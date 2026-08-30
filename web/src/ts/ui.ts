@@ -43,6 +43,8 @@ const init_selects = () => {
         return;
       }
       select.setAttribute("data-selected", new_value);
+
+      dropdown.classList.remove('open');
     });
   });
 }
